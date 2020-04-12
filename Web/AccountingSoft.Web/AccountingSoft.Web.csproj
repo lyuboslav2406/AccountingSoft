@@ -31,7 +31,6 @@
     <ProjectReference Include="..\..\Services\AccountingSoft.Services.Mapping\AccountingSoft.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\AccountingSoft.Services.Messaging\AccountingSoft.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\AccountingSoft.Services\AccountingSoft.Services.csproj" />
-    <ProjectReference Include="..\AccountingSoft.Web.Infrastructure\AccountingSoft.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\AccountingSoft.Web.ViewModels\AccountingSoft.Web.ViewModels.csproj" />
   </ItemGroup>
 </Project>
