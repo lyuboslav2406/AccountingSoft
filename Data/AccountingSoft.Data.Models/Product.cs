@@ -1,9 +1,19 @@
-﻿using System;
-
-namespace AccountingSoft.Data.Models
+﻿namespace AccountingSoft.Data.Models
 {
-    public class Product
+    using AccountingSoft.Data.Common.Models;
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    public class Product : BaseDeletableModel<int>
     {
+        public Product()
+        {
+        }
+
+        [Key]
+        public Guid Id { get; set; }
+
         public string ProductName { get; set; }
 
         public decimal Qty { get; set; }
@@ -12,6 +22,7 @@ namespace AccountingSoft.Data.Models
 
         public decimal Sum { get; set; }
 
-        public DateTime Date { get; set; }
+        [ForeignKey("ClientId")]
+        public Client Client { get; set; }
     }
 }
