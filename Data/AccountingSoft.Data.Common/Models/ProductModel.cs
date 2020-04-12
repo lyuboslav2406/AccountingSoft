@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AccountingSoft.Web.ViewModels.Product
+namespace AccountingSoft.Data.Common.Models
 {
-    class IndexProductViewModel
+    class ProductModel
     {
     }
 }

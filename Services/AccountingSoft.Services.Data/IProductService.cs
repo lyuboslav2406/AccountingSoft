@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AccountingSoft.Web.ViewModels.Client
+namespace AccountingSoft.Services.Data
 {
-    class DeleteClientViewModel
+    class IProductService
     {
     }
 }
