@@ -1,6 +1,7 @@
 ﻿using AccountingSoft.Data.Common.Repositories;
 using AccountingSoft.Data.Models;
 using AccountingSoft.Services.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,9 +19,17 @@ namespace AccountingSoft.Services.Data
 
         public async Task AddClient(Client c)
         {
-            await this.clientRepository.AddAsync(c);
+            try
+            {
+                c.IsDeleted = false;
 
-            await this.clientRepository.SaveChangesAsync();
+                await this.clientRepository.AddAsync(c);
+
+                await this.clientRepository.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+            }
         }
 
         public Task<bool> DeleteClient(Client c)
@@ -45,7 +54,9 @@ namespace AccountingSoft.Services.Data
                 .All()
                 .OrderByDescending(x => x.CreatedOn);
 
-            return clients.To<T>();
+            var c = clients.To<T>();
+
+            return c;
         }
     }
 }

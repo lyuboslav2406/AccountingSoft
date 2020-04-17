@@ -49,20 +49,6 @@
             GC.SuppressFinalize(this);
         }
 
-        public async Task<List<Client>> GetListOfClients(Client t)
-        {
-            var list = await this.Context.Clients.ToListAsync();
-
-            return list;
-        }
-
-        public async Task<List<Product>> GetListOfProducts(Product t)
-        {
-            var list = await this.Context.Products.ToListAsync();
-
-            return list;
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
