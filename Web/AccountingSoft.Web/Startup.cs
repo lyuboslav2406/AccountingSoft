@@ -61,6 +61,10 @@
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
+
+            services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IProductService, ProductService>();
+
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
         }
