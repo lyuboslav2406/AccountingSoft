@@ -1,5 +1,8 @@
 ﻿using AccountingSoft.Data.Common.Repositories;
 using AccountingSoft.Data.Models;
+using AccountingSoft.Services.Mapping;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AccountingSoft.Services.Data
@@ -34,6 +37,15 @@ namespace AccountingSoft.Services.Data
             this.clientRepository.Update(c);
 
             this.clientRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<T> GetAllClients<T>()
+        {
+            var clients = this.clientRepository
+                .All()
+                .OrderByDescending(x => x.CreatedOn);
+
+            return clients.To<T>();
         }
     }
 }

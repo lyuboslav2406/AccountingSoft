@@ -13,5 +13,7 @@ namespace AccountingSoft.Services.Data
         void EditClient(Client c);
 
         Task<bool> DeleteClient(Client c);
+
+        IEnumerable<T> GetAllClients<T>();
     }
 }
