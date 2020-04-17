@@ -8,12 +8,10 @@ namespace AccountingSoft.Services.Data
 {
     public interface IClientService
     {
-        Task<Client> AddClient(Client c);
+        Task AddClient(Client c);
 
-        Task<Client> EditClient(Client c);
+        void EditClient(Client c);
 
         Task<bool> DeleteClient(Client c);
-
-        Task<List<Client>> ListClients(DateTime dAfter);
     }
 }

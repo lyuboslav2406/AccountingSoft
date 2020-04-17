@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AccountingSoft.Web.ViewModels.Product
+﻿namespace AccountingSoft.Web.ViewModels.Product
 {
+    using System;
+
+    using Client = AccountingSoft.Web.ViewModels.Client.ClientViewModel;
+
     public class ProductViewModel
     {
         public string ProductName { get; set; }
@@ -15,5 +15,7 @@ namespace AccountingSoft.Web.ViewModels.Product
         public decimal Sum { get; set; }
 
         public DateTime Date { get; set; }
+
+        public Client Client { get; set; }
     }
 }

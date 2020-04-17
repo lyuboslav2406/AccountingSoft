@@ -1,0 +1,58 @@
+﻿@model IEnumerable<AccountingSoft.Web.ViewModels.Product.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>            
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Qty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SinglePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Client)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SinglePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.EIK)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductName">Edit</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

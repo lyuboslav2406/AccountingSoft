@@ -7,14 +7,14 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class ProductController : Controller
+    public class ClientsController : Controller
     {
-        public IActionResult All()
+        public ClientsController()
         {
-            return this.View();
+
         }
 
-        public IActionResult ByClient()
+        public IActionResult ById()
         {
             return this.View();
         }

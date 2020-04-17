@@ -1,31 +1,39 @@
-﻿using AccountingSoft.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AccountingSoft.Data.Common.Repositories;
+using AccountingSoft.Data.Models;
 using System.Threading.Tasks;
 
 namespace AccountingSoft.Services.Data
 {
     public class ClientService : IClientService
     {
-        public Task<Client> AddClient(Client c)
+        private readonly IDeletableEntityRepository<Client> clientRepository;
+
+        public ClientService(IDeletableEntityRepository<Client> clientRepository)
         {
-            throw new NotImplementedException();
+            this.clientRepository = clientRepository;
+        }
+
+        public async Task AddClient(Client c)
+        {
+            await this.clientRepository.AddAsync(c);
+
+            await this.clientRepository.SaveChangesAsync();
         }
 
         public Task<bool> DeleteClient(Client c)
         {
-            throw new NotImplementedException();
+            this.clientRepository.Delete(c);
+
+            this.clientRepository.SaveChangesAsync();
+
+            return null;
         }
 
-        public Task<Client> EditClient(Client c)
+        public void EditClient(Client c)
         {
-            throw new NotImplementedException();
-        }
+            this.clientRepository.Update(c);
 
-        public Task<List<Client>> ListClients(DateTime dAfter)
-        {
-            throw new NotImplementedException();
+            this.clientRepository.SaveChangesAsync();
         }
     }
 }
