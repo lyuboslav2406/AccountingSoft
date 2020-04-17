@@ -1,12 +1,13 @@
-﻿using AccountingSoft.Data.Common.Repositories;
-using AccountingSoft.Data.Models;
-using AccountingSoft.Services.Mapping;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AccountingSoft.Services.Data
+﻿namespace AccountingSoft.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using AccountingSoft.Data.Common.Repositories;
+    using AccountingSoft.Data.Models;
+    using AccountingSoft.Services.Mapping;
+
     public class ClientService : IClientService
     {
         private readonly IDeletableEntityRepository<Client> clientRepository;
