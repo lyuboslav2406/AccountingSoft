@@ -1,6 +1,9 @@
-﻿using AccountingSoft.Data.Models;
+﻿using AccountingSoft.Data.Common.Repositories;
+using AccountingSoft.Data.Models;
+using AccountingSoft.Services.Mapping;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,24 +11,39 @@ namespace AccountingSoft.Services.Data
 {
     public class ProductService : IProductService
     {
-        public Task<Product> AddProduct(Product p)
+        private readonly IDeletableEntityRepository<Product> productRepository;
+
+        public ProductService(IDeletableEntityRepository<Product> productRepository)
         {
-            throw new NotImplementedException();
+            this.productRepository = productRepository;
         }
 
-        public Task<bool> DeleteProduct(Product p)
+        public async Task AddProduct(Product product)
         {
-            throw new NotImplementedException();
+            await this.productRepository.AddAsync(product);
+            await this.productRepository.SaveChangesAsync();
         }
 
-        public Task<Product> EditProduct(Product p)
+        public Task DeleteProduct(Product product)
         {
-            throw new NotImplementedException();
+             this.productRepository.Delete(product);
+
+             return null;
         }
 
-        public Task<List<Product>> ListProducts(Product p)
+        public async Task EditProduct(Product product)
         {
-            throw new NotImplementedException();
+            this.productRepository.Update(product);
+            await this.productRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<T> GetAllProducts<T>()
+        {
+            var products = this.productRepository
+                 .All()
+                 .OrderByDescending(x => x.CreatedOn);
+
+            return products.To<T>();
         }
     }
 }

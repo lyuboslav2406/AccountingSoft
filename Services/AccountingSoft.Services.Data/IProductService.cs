@@ -1,19 +1,20 @@
-﻿using AccountingSoft.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AccountingSoft.Services.Data
+﻿namespace AccountingSoft.Services.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using AccountingSoft.Data.Models;
+
     public interface IProductService
     {
-        Task<Product> AddProduct(Product p);
+        Task AddProduct(Product product);
 
-        Task<Product> EditProduct(Product p);
+        Task EditProduct(Product product);
 
-        Task<bool> DeleteProduct(Product p);
+        Task DeleteProduct(Product product);
 
-        Task<List<Product>> ListProducts(Product p);
+        IEnumerable<T> GetAllProducts<T>();
     }
 }
