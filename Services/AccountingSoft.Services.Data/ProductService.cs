@@ -24,6 +24,22 @@ namespace AccountingSoft.Services.Data
             await this.productRepository.SaveChangesAsync();
         }
 
+        public async Task<Guid> CreateAsync(string name, decimal qty, decimal singlePrice, System.Guid clientId)
+        {
+            var product = new Product
+            {
+                ProductName = name,
+                Qty = qty,
+                SinglePrice = singlePrice,
+                Sum = qty * singlePrice,
+                ClientId = clientId,
+            };
+
+            await this.productRepository.AddAsync(product);
+            await this.productRepository.SaveChangesAsync();
+            return product.Id;
+        }
+
         public Task DeleteProduct(Product product)
         {
              this.productRepository.Delete(product);

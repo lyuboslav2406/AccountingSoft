@@ -11,6 +11,8 @@
     {
         Task AddProduct(Product product);
 
+        Task<System.Guid> CreateAsync(string name, decimal qty, decimal singlePrice, System.Guid clientId);
+
         Task EditProduct(Product product);
 
         Task DeleteProduct(Product product);

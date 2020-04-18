@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
+    var clients = @Model.Clients.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 }
 
 <h1>Create</h1>
@@ -28,13 +29,8 @@
                 <span asp-validation-for="SinglePrice" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Sum" class="control-label"></label>
-                <input asp-for="Sum" class="form-control" />
-                <span asp-validation-for="Sum" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Client" class="control-label"></label>
-                <select asp-for="Client" class ="form-control" asp-items="ViewBag.ClientId"></select>
+                <label asp-for="ClientId" class="control-label"></label>
+                <select asp-for="ClientId" class ="form-control" asp-items="clients"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -46,7 +42,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

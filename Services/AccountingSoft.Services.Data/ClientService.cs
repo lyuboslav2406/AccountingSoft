@@ -51,13 +51,10 @@ namespace AccountingSoft.Services.Data
 
         public IEnumerable<T> GetAllClients<T>()
         {
-            var clients = this.clientRepository
-                .All()
-                .OrderByDescending(x => x.CreatedOn);
+            IQueryable<Client> query =
+               this.clientRepository.All().OrderBy(x => x.Name);
 
-            var c = clients.To<T>();
-
-            return c;
+            return query.To<T>().ToList();
         }
     }
 }

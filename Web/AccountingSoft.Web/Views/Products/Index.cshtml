@@ -1,5 +1,4 @@
-﻿@model IEnumerable<AccountingSoft.Web.ViewModels.Product.ProductViewModel>
-
+﻿@model List<AccountingSoft.Web.ViewModels.Product.ProductViewModel>
 @{
     ViewData["Title"] = "Index";
 }
@@ -11,48 +10,49 @@
 </p>
 <table class="table">
     <thead>
-        <tr>            
+        <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductName)
+                Име
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Qty)
+                Количество
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SinglePrice)
+                Единична цена
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sum)
+                Обща сума
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Client)
+                Клиент
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-           
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Qty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SinglePrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Client.EIK)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductName">Edit</a> |
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SinglePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.EIK)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProductName">Edit</a> |
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
