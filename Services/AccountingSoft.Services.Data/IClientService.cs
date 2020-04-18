@@ -13,7 +13,7 @@
 
         Task<bool> DeleteClient(Client c);
 
-        IEnumerable<T> GetAllClients<T>();
+        IEnumerable<T> GetAllClients<T>(string search = null);
 
         Task<System.Guid> CreateAsync(string name, string EIK, bool DDS);
     }

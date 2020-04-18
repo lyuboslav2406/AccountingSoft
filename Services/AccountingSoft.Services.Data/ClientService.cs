@@ -49,10 +49,15 @@ namespace AccountingSoft.Services.Data
             this.clientRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAllClients<T>()
+        public IEnumerable<T> GetAllClients<T>(string search = null)
         {
             IQueryable<Client> query =
                this.clientRepository.All().OrderBy(x => x.Name);
+
+            if (search != null)
+            {
+                query = query.Where(a => a.EIK.Contains(search));
+            }
 
             return query.To<T>().ToList();
         }

@@ -45,9 +45,9 @@
             return this.RedirectToAction("Index", "Clients");
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string search = null)
         {
-            var list = this.clientService.GetAllClients<ClientViewModel>();
+            var list = this.clientService.GetAllClients<ClientViewModel>(search);
 
             return this.View(list.ToList());
         }
