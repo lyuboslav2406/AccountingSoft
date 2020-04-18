@@ -33,14 +33,14 @@
         {
             this.clientService.AddClient(clientViewModel.ToClient(clientViewModel));
 
-            return this.RedirectToAction("Index", "ClientsController");
+            return this.RedirectToAction("Index", "Clients");
         }
 
         public IActionResult Index()
         {
-            var list = this.clientService.GetAllClients<Client>();
+            var list = this.clientService.GetAllClients<ClientViewModel>();
 
-            return this.View(list);
+            return this.View(list.ToList());
         }
 
         public IActionResult Delete()

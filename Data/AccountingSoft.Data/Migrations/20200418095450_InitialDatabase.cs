@@ -2,7 +2,7 @@
 
 namespace AccountingSoft.Data.Migrations
 {
-    public partial class clientandproduct : Migration
+    public partial class InitialDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

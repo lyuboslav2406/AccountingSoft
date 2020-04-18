@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\AccountingSoft.Services.Mapping\AccountingSoft.Services.Mapping.csproj" />
     <ProjectReference Include="..\AccountingSoft.Data.Common\AccountingSoft.Data.Common.csproj" />
   </ItemGroup>
   

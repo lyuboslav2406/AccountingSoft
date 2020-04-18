@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AccountingSoft.Web.ViewModels.Client.ClientViewModel>
+﻿@model List<AccountingSoft.Web.ViewModels.Client.ClientViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,14 +12,13 @@
 <table class="table">
     <thead>
         <tr>            
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
+            <th>Име
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EIK)
+                ЕИК
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DDS)
+                ДДС
             </th>
             <th></th>
         </tr>
@@ -34,7 +33,7 @@
                 @Html.DisplayFor(modelItem => item.EIK)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EIK)
+                @Html.DisplayFor(modelItem => item.DDS)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.EIK">Edit</a> 

@@ -29,9 +29,12 @@ namespace AccountingSoft.Services.Data
 
                 await this.clientRepository.SaveChangesAsync();
             }
-            catch (Exception e)
+            catch (Exception x)
             {
+
+                throw;
             }
+                
         }
 
         public Task<bool> DeleteClient(Client c)
