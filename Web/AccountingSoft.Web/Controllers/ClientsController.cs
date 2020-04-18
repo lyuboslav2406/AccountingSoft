@@ -6,7 +6,9 @@
     using System.Threading.Tasks;
     using AccountingSoft.Data.Models;
     using AccountingSoft.Services.Data;
+    using AccountingSoft.Services.Mapping;
     using AccountingSoft.Web.ViewModels.Client;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class ClientsController : Controller
@@ -29,10 +31,17 @@
         }
 
         [HttpPost]
-        public IActionResult Create(ClientViewModel clientViewModel)
+        [Authorize]
+        public async Task<IActionResult> Create(ClientViewModel input)
         {
-            this.clientService.AddClient(clientViewModel.ToClient(clientViewModel));
+            var client = AutoMapperConfig.MapperInstance.Map<Client>(input);
 
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            var clientId = await this.clientService.CreateAsync(input.Name, input.EIK, input.DDS);
             return this.RedirectToAction("Index", "Clients");
         }
 
@@ -48,7 +57,7 @@
             return this.View();
         }
 
-        public IActionResult Update()
+        public IActionResult Edit()
         {
             return this.View();
         }

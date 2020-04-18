@@ -22,6 +22,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link text-dark" data-toggle="dropdown" role="button" aria-expanded="false">Cliet <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a asp-area="" asp-controller="Clients" asp-action="Index">All Clients</a></li>
+                                <li><a asp-area="" asp-controller="Clients" asp-action="Create">Create Client</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link text-dark" data-toggle="dropdown" role="button" aria-expanded="false">Product <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a asp-area="" asp-controller="Products" asp-action="All">All Products</a></li>
+                                <li><a asp-area="" asp-controller="Products" asp-action="ByClient">Products By Client</a></li>
+                                <li><a asp-area="" asp-controller="Products" asp-action="Create">Create Product</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

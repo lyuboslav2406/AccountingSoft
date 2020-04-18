@@ -2,9 +2,9 @@
 {
     using AccountingSoft.Services.Mapping;
     using AutoMapper;
-    using ClientModel = AccountingSoft.Data.Models.Client;
+    using AccountingSoft.Data.Models;
 
-    public class ClientViewModel : IMapFrom<ClientModel>, IMapTo<ClientModel>, IHaveCustomMappings
+    public class ClientViewModel : IMapFrom<Client>, IMapTo<Client>, IHaveCustomMappings
     {
         public string Name { get; set; }
 
@@ -14,19 +14,7 @@
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<ClientModel, ClientViewModel>();
+            configuration.CreateMap<Client, ClientViewModel>();
         }
-
-        public ClientModel ToClient(ClientViewModel cl)
-        {
-            ClientModel clientModel = new ClientModel()
-            {
-               DDS = this.DDS,
-               EIK = this.EIK,
-               Name = this.Name,
-            };
-            return clientModel;
-        }
-
     }
 }
