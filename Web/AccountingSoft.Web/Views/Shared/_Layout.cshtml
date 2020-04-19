@@ -24,10 +24,10 @@
 
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <input type="text" name="Search" class="form-control" placeholder="Search by EIK" />
+                                <input type="text" name="Search" class="form-control" placeholder="ЕИК" />
                             </li>
                             <li class="nav-item">
-                                <input type="submit" class="btn btn-info" value="Search" asp-area="" asp-controller="Clients" asp-action="Index" />
+                                <input type="submit" class="btn btn-info" value="Търсене" asp-area="" asp-controller="Clients" asp-action="Index" />
                             </li>
                         </ul>
                     </form>
@@ -35,24 +35,24 @@
 
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link text-dark" data-toggle="dropdown" role="button" aria-expanded="false">Cliet <span class="caret"></span></a>
+                            <a href="#" class="nav-link text-dark" data-toggle="dropdown" role="button" aria-expanded="false">Клиент <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a asp-area="" asp-controller="Clients" asp-action="Index">All Clients</a></li>
-                                <li><a asp-area="" asp-controller="Clients" asp-action="Create">Create Client</a></li>
+                                <li><a asp-area="" asp-controller="Clients" asp-action="Index">Всички клиенти</a></li>
+                                <li><a asp-area="" asp-controller="Clients" asp-action="Create">Създай клиент</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link text-dark" data-toggle="dropdown" role="button" aria-expanded="false">Product <span class="caret"></span></a>
+                            <a href="#" class="nav-link text-dark" data-toggle="dropdown" role="button" aria-expanded="false">Продукт <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a asp-area="" asp-controller="Products" asp-action="Index">All Products</a></li>
-                                <li><a asp-area="" asp-controller="Products" asp-action="ByClient">Products By Client</a></li>
-                                <li><a asp-area="" asp-controller="Products" asp-action="Create">Create Product</a></li>
+                                <li><a asp-area="" asp-controller="Products" asp-action="Index">Всички продукти</a></li>
+                                <li><a asp-area="" asp-controller="Products" asp-action="ByClient">Продукти на клиент</a></li>
+                                <li><a asp-area="" asp-controller="Products" asp-action="Create">Създай продукт</a></li>
                             </ul>
                         </li>
-                        <li class="dropdown" onchange="SaveClientToMemoryCache()" >
+                        <li class="nav-link text-dark" onchange="SaveClientToMemoryCache()" >
                             @await Component.InvokeAsync("Client")
                         </li>                        
                     </ul>

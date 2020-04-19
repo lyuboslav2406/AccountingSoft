@@ -3,10 +3,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Продукти</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Създай нов продукт</a>
 </p>
 <table class="table">
     <thead>
@@ -50,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.Client.EIK)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProductName">Edit</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ProductName">Редактирай</a> |
                 </td>
             </tr>
         }

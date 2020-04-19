@@ -4,9 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Създай нов клиент</h1>
 
-<h4>Clients</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,27 +13,27 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Име</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EIK" class="control-label"></label>
+                <label asp-for="EIK" class="control-label">ЕИК</label>
                 <input asp-for="EIK" class="form-control" />
                 <span asp-validation-for="EIK" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="DDS" /> @Html.DisplayNameFor(model => model.DDS)
+                    <input class="form-check-input" asp-for="DDS"/> Регистриран по ДДС
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Регистрирай" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Виж всички клиенти</a>
 </div>

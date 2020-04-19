@@ -60,7 +60,8 @@
             return this.RedirectToAction("Index", "Products");
         }
 
-        public IActionResult Delete()
+        [HttpDelete]
+        public IActionResult Delete(System.Guid productId)
         {
             return this.View();
         }

@@ -42,9 +42,7 @@ namespace AccountingSoft.Services.Data
 
         public Task DeleteProduct(Product product)
         {
-             this.productRepository.Delete(product);
-
-             return null;
+            throw new NotImplementedException();
         }
 
         public async Task EditProduct(Product product)
@@ -60,6 +58,13 @@ namespace AccountingSoft.Services.Data
                  .OrderByDescending(x => x.CreatedOn);
 
             return products.To<T>();
+        }
+
+        public Product GetById(Guid productId)
+        {
+            var product = this.productRepository.All().Where(x => x.Id == productId);
+
+            return product.FirstOrDefault();
         }
     }
 }

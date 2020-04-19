@@ -5,40 +5,38 @@
     var clients = @Model.Clients.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 }
 
-<h1>Create</h1>
-
-<h4>Products</h4>
+<h1>Създай нов продукт</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
             <div class="form-group">
-                <label asp-for="ProductName" class="control-label"></label>
+                <label asp-for="ProductName" class="control-label">Име на продукт</label>
                 <input asp-for="ProductName" class="form-control" />
                 <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Qty" class="control-label"></label>
+                <label asp-for="Qty" class="control-label">Количество</label>
                 <input asp-for="Qty" class="form-control" />
                 <span asp-validation-for="Qty" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SinglePrice" class="control-label"></label>
+                <label asp-for="SinglePrice" class="control-label">Единична цена</label>
                 <input asp-for="SinglePrice" class="form-control" />
                 <span asp-validation-for="SinglePrice" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ClientId" class="control-label"></label>
+                <label asp-for="ClientId" class="control-label">Име на клиент</label>
                 <select asp-for="ClientId" class ="form-control" asp-items="clients"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Създай продукт" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Виж всички продукти</a>
 </div>
