@@ -56,5 +56,12 @@
                 this.Context?.Dispose();
             }
         }
+
+        public List<TEntity> GetListOfClients()
+        {
+            var list = this.DbSet.ToList();
+
+            return list;
+        }
     }
 }

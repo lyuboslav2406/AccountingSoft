@@ -19,5 +19,7 @@
         void Delete(TEntity entity);
 
         Task<int> SaveChangesAsync();
+
+        List<TEntity> GetListOfClients();
     }
 }

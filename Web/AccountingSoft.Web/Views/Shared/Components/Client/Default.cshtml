@@ -1,0 +1,3 @@
+﻿@model AccountingSoft.Web.ViewModels.LayoutViewModel
+
+@Html.DropDownList("Клиенти", @Model.Clients.Select(x => new SelectListItem() { Text = x.Name, Value = x.EIK }), "Избери Клиент", new { id="selectClient"})

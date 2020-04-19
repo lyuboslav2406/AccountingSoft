@@ -10,14 +10,23 @@
     using AccountingSoft.Web.ViewModels.Client;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
 
     public class ClientsController : Controller
     {
         private readonly IClientService clientService;
+        private IMemoryCache memoryCache;
 
-        public ClientsController(IClientService clientService)
+        public ClientsController(IClientService clientService, IMemoryCache memoryCache)
         {
             this.clientService = clientService;
+            this.memoryCache = memoryCache;
+        }
+
+        public bool SaveClientToMemoryCache(string selected)
+        {
+            this.memoryCache.Set("ClientSelected", selected);
+            return true;
         }
 
         public IActionResult ById()

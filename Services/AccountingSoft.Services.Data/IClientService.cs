@@ -16,5 +16,7 @@
         IEnumerable<T> GetAllClients<T>(string search = null);
 
         Task<System.Guid> CreateAsync(string name, string EIK, bool DDS);
+
+        List<Client> GetListOfClients();
     }
 }

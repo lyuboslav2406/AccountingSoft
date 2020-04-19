@@ -61,5 +61,12 @@ namespace AccountingSoft.Services.Data
 
             return query.To<T>().ToList();
         }
+
+        public List<Client> GetListOfClients()
+        {
+            var list = this.clientRepository.GetListOfClients();
+
+            return list;
+        }
     }
 }

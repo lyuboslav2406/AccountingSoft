@@ -53,7 +53,7 @@
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                     });
             services.AddRazorPages();
-
+            services.AddMemoryCache();
             services.AddSingleton(this.configuration);
 
             // Data repositories
