@@ -12,7 +12,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
 
-    public class ClientsController : Controller
+    public class ClientsController : BaseController
     {
         private readonly IClientService clientService;
         private readonly IProductService productService;
