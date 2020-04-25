@@ -4,3 +4,5 @@
 4. delete na product + button v indexa page-a
 5. export kum csv/pdf na nalichnost za klient
 6. css-a overall da se napravi tumen
+7. dobavi logging
+8. exception handling
