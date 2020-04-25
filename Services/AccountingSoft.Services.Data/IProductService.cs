@@ -17,6 +17,10 @@
 
         Task DeleteProduct(Product product);
 
+        IEnumerable<T> GetAllProducts<T>(Guid id);
+
         IEnumerable<T> GetAllProducts<T>();
+
+        Task<bool> DeleteAllClientProducts(Client c);
     }
 }

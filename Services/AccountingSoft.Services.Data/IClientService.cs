@@ -18,5 +18,7 @@
         Task<System.Guid> CreateAsync(string name, string EIK, bool DDS);
 
         List<Client> GetListOfClients();
+
+        Task<Client> GetSignleClient(Guid client);
     }
 }

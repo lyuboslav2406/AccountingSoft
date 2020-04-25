@@ -13,6 +13,7 @@ namespace AccountingSoft.Services.Data
     public class ClientService : IClientService
     {
         private readonly IDeletableEntityRepository<Client> clientRepository;
+        private readonly IProductService productService;
 
         public ClientService(IDeletableEntityRepository<Client> clientRepository)
         {
@@ -33,13 +34,20 @@ namespace AccountingSoft.Services.Data
             return client.Id;
         }
 
-        public Task<bool> DeleteClient(Client c)
+        public async Task<bool> DeleteClient(Client c)
         {
-            this.clientRepository.Delete(c);
+            try
+            {
+                this.clientRepository.Delete(c);
 
-            this.clientRepository.SaveChangesAsync();
+                await this.clientRepository.SaveChangesAsync();
 
-            return null;
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public void EditClient(Client c)
@@ -67,6 +75,13 @@ namespace AccountingSoft.Services.Data
             var list = this.clientRepository.GetListOfClients();
 
             return list;
+        }
+
+        public async Task<Client> GetSignleClient(Guid eik)
+        {
+            var clieent = this.clientRepository.Find(eik);
+
+            return clieent;
         }
     }
 }

@@ -10,21 +10,36 @@
     using AccountingSoft.Web.ViewModels.Product;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
 
     public class ProductsController : Controller
     {
         private readonly IProductService productService;
         private readonly IClientService clientService;
+        private IMemoryCache memoryCache;
 
-        public ProductsController(IProductService productService, IClientService clientService)
+        public ProductsController(IProductService productService, IClientService clientService, IMemoryCache memoryCache)
         {
             this.productService = productService;
             this.clientService = clientService;
+            this.memoryCache = memoryCache;
         }
 
         public IActionResult Index()
         {
-            var products = this.productService.GetAllProducts<ProductViewModel>();
+            string idString = string.Empty;
+            this.memoryCache.TryGetValue("ClientSelected", out idString);
+            IEnumerable<ProductViewModel> products;
+
+            if (idString != null)
+            {
+                Guid id = new Guid(idString);
+                products = this.productService.GetAllProducts<ProductViewModel>(id);
+            }
+            else
+            {
+                products = this.productService.GetAllProducts<ProductViewModel>();
+            }
 
             return this.View(products.ToList());
         }

@@ -12,7 +12,8 @@
 <table class="table">
     <thead>
         <tr>            
-            <th>Име
+            <th>
+                Име
             </th>
             <th>
                 ЕИК
@@ -36,7 +37,9 @@
                 @Html.DisplayFor(modelItem => item.DDS)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.EIK">Редактирай</a> 
+                <a asp-action="Edit" asp-route-id="@item.Id">Редактирай</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a> 
+            </td>
         </tr>
 }
     </tbody>

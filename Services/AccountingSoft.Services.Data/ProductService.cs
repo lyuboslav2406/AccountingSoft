@@ -40,6 +40,19 @@ namespace AccountingSoft.Services.Data
             return product.Id;
         }
 
+        public async Task<bool> DeleteAllClientProducts(Client c)
+        {
+            var listOfProducts = this.productRepository.All().Where(p => p.ClientId == c.Id).ToList();
+            int deleted = 0;
+            foreach (var pr in listOfProducts)
+            {
+                this.productRepository.Delete(pr);
+                deleted++;
+            }
+
+            return true ? deleted == listOfProducts.Count() : false;
+        }
+
         public Task DeleteProduct(Product product)
         {
             throw new NotImplementedException();
@@ -49,6 +62,15 @@ namespace AccountingSoft.Services.Data
         {
             this.productRepository.Update(product);
             await this.productRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<T> GetAllProducts<T>(Guid id)
+        {
+            var products = this.productRepository
+                 .All().Where(p => p.ClientId == id)
+                 .OrderByDescending(x => x.CreatedOn);
+
+            return products.To<T>();
         }
 
         public IEnumerable<T> GetAllProducts<T>()

@@ -15,11 +15,13 @@
     public class ClientsController : Controller
     {
         private readonly IClientService clientService;
+        private readonly IProductService productService;
         private IMemoryCache memoryCache;
 
-        public ClientsController(IClientService clientService, IMemoryCache memoryCache)
+        public ClientsController(IClientService clientService, IProductService productService, IMemoryCache memoryCache)
         {
             this.clientService = clientService;
+            this.productService = productService;
             this.memoryCache = memoryCache;
         }
 
@@ -61,14 +63,44 @@
             return this.View(list.ToList());
         }
 
-        public IActionResult Delete()
+        [HttpGet]
+        public IActionResult Delete(Guid id)
         {
-            return this.View();
+            var cl = this.clientService.GetSignleClient(id);
+            var client = AutoMapperConfig.MapperInstance.Map<ClientViewModel>(cl.Result);
+            return this.View(client);
         }
 
-        public IActionResult Edit()
+        [HttpPost]
+        public async Task<IActionResult> Delete(ClientViewModel c)
         {
-            return this.View();
+            var client = AutoMapperConfig.MapperInstance.Map<Client>(c);
+            var deleteProducts = await this.productService.DeleteAllClientProducts(client);
+            if (deleteProducts)
+            {
+                await this.clientService.DeleteClient(client);
+                return this.RedirectToAction("Index", "Clients");
+            }
+            else
+            {
+                return this.View();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ClientViewModel cl)
+        {
+            var client = AutoMapperConfig.MapperInstance.Map<Client>(cl);
+            this.clientService.EditClient(client);
+            return this.RedirectToAction("Index", "Clients");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(Guid id)
+        {
+            var cl = this.clientService.GetSignleClient(id);
+            var client = AutoMapperConfig.MapperInstance.Map<ClientViewModel>(cl.Result);
+            return this.View(client);
         }
     }
 }

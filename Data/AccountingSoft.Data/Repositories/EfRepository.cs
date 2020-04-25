@@ -23,7 +23,7 @@
         protected ApplicationDbContext Context { get; set; }
 
         public virtual IQueryable<TEntity> All() => this.DbSet;
-
+        
         public virtual IQueryable<TEntity> AllAsNoTracking() => this.DbSet.AsNoTracking();
 
         public virtual Task AddAsync(TEntity entity) => this.DbSet.AddAsync(entity).AsTask();
@@ -63,5 +63,7 @@
 
             return list;
         }
+
+        public TEntity Find(Guid id) => this.DbSet.Find(id);
     }
 }

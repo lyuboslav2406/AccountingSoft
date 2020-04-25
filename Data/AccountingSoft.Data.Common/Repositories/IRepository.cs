@@ -21,5 +21,7 @@
         Task<int> SaveChangesAsync();
 
         List<TEntity> GetListOfClients();
+
+        TEntity Find(Guid id);
     }
 }
