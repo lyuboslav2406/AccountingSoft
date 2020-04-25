@@ -75,15 +75,38 @@
             return this.RedirectToAction("Index", "Products");
         }
 
-        [HttpDelete]
-        public IActionResult Delete(System.Guid productId)
+        [HttpGet]
+        public IActionResult Delete(Guid id)
         {
-            return this.View();
+            var pr = this.productService.GetProductById(id);
+            var product = AutoMapperConfig.MapperInstance.Map<ProductViewModel>(pr);
+            return this.View(product);
         }
 
-        public IActionResult Update()
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProductViewModel p)
         {
-            return this.View();
+            var product = AutoMapperConfig.MapperInstance.Map<Product>(p);
+            await this.productService.DeleteProduct(product);
+
+            return this.RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ProductViewModel pr)
+        {
+            var product = AutoMapperConfig.MapperInstance.Map<Product>(pr);
+            this.productService.EditProduct(product);
+            return this.RedirectToAction("Index", "Products");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(Guid id)
+        {
+            var pr = this.productService.GetProductById(id);
+            var product = AutoMapperConfig.MapperInstance.Map<ProductViewModel>(pr);
+            return this.View(product);
         }
     }
 }

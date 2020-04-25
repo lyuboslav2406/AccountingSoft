@@ -10,6 +10,8 @@
 
     public class ProductViewModel : IMapTo<Product>, IMapFrom<Product>
     {
+        public Guid Id { get; set; }
+
         public string ProductName { get; set; }
 
         public decimal Qty { get; set; }

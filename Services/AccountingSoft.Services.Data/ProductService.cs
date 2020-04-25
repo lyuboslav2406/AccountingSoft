@@ -53,9 +53,10 @@ namespace AccountingSoft.Services.Data
             return true ? deleted == listOfProducts.Count() : false;
         }
 
-        public Task DeleteProduct(Product product)
+        public async Task DeleteProduct(Product product)
         {
-            throw new NotImplementedException();
+            this.productRepository.Delete(product);
+            await this.productRepository.SaveChangesAsync();
         }
 
         public async Task EditProduct(Product product)
@@ -82,9 +83,9 @@ namespace AccountingSoft.Services.Data
             return products.To<T>();
         }
 
-        public Product GetById(Guid productId)
+        public Product GetProductById(Guid id)
         {
-            var product = this.productRepository.All().Where(x => x.Id == productId);
+            var product = this.productRepository.All().Where(x => x.Id == id);
 
             return product.FirstOrDefault();
         }

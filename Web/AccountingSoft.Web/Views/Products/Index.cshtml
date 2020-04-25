@@ -50,7 +50,8 @@
                     @Html.DisplayFor(modelItem => item.Client.EIK)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProductName">Редактирай</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редактирай</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a>
                 </td>
             </tr>
         }

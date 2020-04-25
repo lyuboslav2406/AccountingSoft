@@ -21,6 +21,8 @@
 
         IEnumerable<T> GetAllProducts<T>();
 
+        Product GetProductById(Guid id);
+
         Task<bool> DeleteAllClientProducts(Client c);
     }
 }
