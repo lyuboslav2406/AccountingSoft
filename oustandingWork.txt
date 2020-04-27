@@ -1,8 +1,9 @@
 1. Login page-a da ne pokazva nishto dr
-2. Tursachkata da vlezne v page-a si i da dobavim za produkta tursachka po name ili eik na klient
+2. Tursachkata da vlezne v page-a si i da dobavim za produkta tursachka po name ili eik na klient ( i tuka crashva)
 3. login page-a da se barne
-4. delete na product + button v indexa page-a
 5. export kum csv/pdf na nalichnost za klient
 6. css-a overall da se napravi tumen
 7. dobavi logging
 8. exception handling
+9. edit product crashva
+10. edint client buggvas

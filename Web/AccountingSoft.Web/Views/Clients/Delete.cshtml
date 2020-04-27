@@ -12,19 +12,19 @@
     <dl class="row">
         
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Име
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EIK)
+            ЕИК
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.EIK)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DDS)
+            Регистриран по ДДС
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DDS)
@@ -33,7 +33,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Изтрий" class="btn btn-danger" /> |
+        <a asp-action="Index">Назад</a>
     </form>
 </div>

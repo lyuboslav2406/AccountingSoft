@@ -44,11 +44,6 @@
             return this.View(products.ToList());
         }
 
-        public IActionResult ByClient()
-        {
-            return this.View();
-        }
-
         public IActionResult Create()
         {
             var clients = this.clientService.GetAllClients<ClientDropDownViewModel>();
@@ -106,6 +101,8 @@
         {
             var pr = this.productService.GetProductById(id);
             var product = AutoMapperConfig.MapperInstance.Map<ProductViewModel>(pr);
+            var clients = this.clientService.GetAllClients<ClientDropDownViewModel>();
+            product.Clients = clients;
             return this.View(product);
         }
     }

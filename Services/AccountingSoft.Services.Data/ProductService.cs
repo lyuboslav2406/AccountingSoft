@@ -1,25 +1,34 @@
-﻿using AccountingSoft.Data.Common.Repositories;
-using AccountingSoft.Data.Models;
-using AccountingSoft.Services.Mapping;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AccountingSoft.Services.Data
+﻿namespace AccountingSoft.Services.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Web.Mvc;
+
+    using AccountingSoft.Data.Common.Repositories;
+    using AccountingSoft.Data.Models;
+    using AccountingSoft.Services.Mapping;
+    using Microsoft.EntityFrameworkCore;
+
     public class ProductService : IProductService
     {
         private readonly IDeletableEntityRepository<Product> productRepository;
+        private readonly IDeletableEntityRepository<Client> clientRepository;
 
-        public ProductService(IDeletableEntityRepository<Product> productRepository)
+        public ProductService(IDeletableEntityRepository<Product> productRepository, IDeletableEntityRepository<Client> clientRepository)
         {
             this.productRepository = productRepository;
+            this.clientRepository = clientRepository;
         }
 
         public async Task AddProduct(Product product)
         {
+            if (product.Client.DDS)
+            {
+                product.SinglePrice *= 1.2M;
+            }
+
             await this.productRepository.AddAsync(product);
             await this.productRepository.SaveChangesAsync();
         }
@@ -85,9 +94,8 @@ namespace AccountingSoft.Services.Data
 
         public Product GetProductById(Guid id)
         {
-            var product = this.productRepository.All().Where(x => x.Id == id);
-
-            return product.FirstOrDefault();
+            var product = this.productRepository.All().Where(x => x.Id == id).Include(m => m.Client).FirstOrDefault();
+            return product;
         }
     }
 }

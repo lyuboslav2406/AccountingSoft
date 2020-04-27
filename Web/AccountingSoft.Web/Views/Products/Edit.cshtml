@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var clients = @Model.Clients.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 }
 
 <h1>Edit</h1>
@@ -15,37 +16,37 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="ProductName" class="control-label"></label>
+                <label asp-for="ProductName" class="control-label">Име</label>
                 <input asp-for="ProductName" class="form-control" />
                 <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Qty" class="control-label"></label>
+                <label asp-for="Qty" class="control-label">Количество</label>
                 <input asp-for="Qty" class="form-control" />
                 <span asp-validation-for="Qty" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SinglePrice" class="control-label"></label>
+                <label asp-for="SinglePrice" class="control-label">Ед Цена</label>
                 <input asp-for="SinglePrice" class="form-control" />
                 <span asp-validation-for="SinglePrice" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Sum" class="control-label"></label>
+                <label asp-for="Sum" class="control-label">Сума</label>
                 <input asp-for="Sum" class="form-control" />
                 <span asp-validation-for="Sum" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Client" class="control-label"></label>
-                <select asp-for="Client" class="form-control" asp-items="ViewBag.ClientId"></select>
+                <label asp-for="Client" class="control-label">Клиент</label>ss
+                <select asp-for="Client" class="form-control" asp-items="clients"></select>
                 <span asp-validation-for="Client" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Запази" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад</a>
 </div>
