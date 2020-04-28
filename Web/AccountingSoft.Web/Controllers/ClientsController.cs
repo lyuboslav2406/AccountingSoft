@@ -52,7 +52,7 @@
                 return this.View(input);
             }
 
-            var clientId = await this.clientService.CreateAsync(input.Name, input.EIK, input.DDS);
+            await this.clientService.AddClient(client);
             return this.RedirectToAction("Index", "Clients");
         }
 

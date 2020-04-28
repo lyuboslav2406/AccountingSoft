@@ -7,3 +7,6 @@
 8. exception handling
 9. edit product crashva
 10. edint client buggvas
+12. da se dobavi stranica za izpisvane na produkti/prodajba to discuss
+13. edit product da proverqva dali klienta e s dds ili ne
+14. da 

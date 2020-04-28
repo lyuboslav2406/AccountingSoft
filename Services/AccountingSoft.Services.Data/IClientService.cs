@@ -9,6 +9,8 @@
 
     public interface IClientService
     {
+        Task AddClient(Client c);
+
         void EditClient(Client c);
 
         Task<bool> DeleteClient(Client c);

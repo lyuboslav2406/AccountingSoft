@@ -20,6 +20,12 @@ namespace AccountingSoft.Services.Data
             this.clientRepository = clientRepository;
         }
 
+        public async Task AddClient(Client c)
+        {
+            await this.clientRepository.AddAsync(c);
+            await this.clientRepository.SaveChangesAsync();
+        }
+
         public async Task<System.Guid> CreateAsync(string name, string EIK, bool DDS)
         {
             var client = new Client

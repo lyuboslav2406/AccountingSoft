@@ -24,7 +24,8 @@
 
         public async Task AddProduct(Product product)
         {
-            if (product.Client.DDS)
+            var findClient = this.clientRepository.Find(product.ClientId);
+            if (findClient.DDS)
             {
                 product.SinglePrice *= 1.2M;
             }

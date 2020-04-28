@@ -1,0 +1,42 @@
+﻿@model AccountingSoft.Web.ViewModels.Product.ProductViewModel
+
+
+@{
+    ViewData["Title"] = "Edit";
+    var clients = @Model.Clients.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+}
+
+<h1>Изписване на продукт</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SellingProduct">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label">Име</label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Qty" class="control-label">Количество</label>
+                <input asp-for="Qty" class="form-control" />
+                <span asp-validation-for="Qty" class="text-danger"></span>
+            </div>
+                
+            <div class="form-group">
+                <input type="hidden" asp-for="Sum" class="form-control" />
+                <input type="hidden" asp-for="SinglePrice" class="form-control" />
+                <input type="hidden" asp-for="Client.Id" class="form-control" asp-items="clients"></input>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Изпиши" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад</a>
+</div>

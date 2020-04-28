@@ -60,13 +60,13 @@
         public async Task<IActionResult> Create(ProductViewModel input)
         {
             var product = AutoMapperConfig.MapperInstance.Map<Product>(input);
-
+            product.Id = Guid.NewGuid();
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
 
-            var productId = await this.productService.CreateAsync(input.ProductName, input.Qty, input.SinglePrice, input.ClientId);
+            await this.productService.AddProduct(product);
             return this.RedirectToAction("Index", "Products");
         }
 
@@ -104,6 +104,32 @@
             var clients = this.clientService.GetAllClients<ClientDropDownViewModel>();
             product.Clients = clients;
             return this.View(product);
+        }
+
+        [HttpGet]
+        public IActionResult SellingProduct(Guid id)
+        {
+            var pr = this.productService.GetProductById(id);
+            var product = AutoMapperConfig.MapperInstance.Map<ProductViewModel>(pr);
+            var clients = this.clientService.GetAllClients<ClientDropDownViewModel>();
+            product.Clients = clients;
+            return this.View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SellingProduct(ProductViewModel pr)
+        {
+            var product = AutoMapperConfig.MapperInstance.Map<Product>(pr);
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(pr);
+            }
+            product.Id = Guid.NewGuid();
+            product.Qty = product.Qty * (-1);
+            await this.productService.AddProduct(product);
+
+            return this.RedirectToAction("Index", "Products");
         }
     }
 }
