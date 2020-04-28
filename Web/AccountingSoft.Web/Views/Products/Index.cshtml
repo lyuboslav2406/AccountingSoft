@@ -4,7 +4,11 @@
 }
 
 <h1>Продукти</h1>
-
+<form>
+    <input type="search" name="Search" placeholder="Продукт" />
+    <input type="submit" class="btn btn-info" value="Търсене" asp-area="" asp-controller="Products" asp-action="Index" />
+</form>
+<hr />
 <p>
     <a asp-action="Create">Създай нов продукт</a>
 </p>

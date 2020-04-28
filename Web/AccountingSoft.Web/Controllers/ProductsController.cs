@@ -25,7 +25,7 @@
             this.memoryCache = memoryCache;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string search = null)
         {
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
@@ -34,11 +34,11 @@
             if (idString != null)
             {
                 Guid id = new Guid(idString);
-                products = this.productService.GetAllProducts<ProductViewModel>(id);
+                products = this.productService.GetAllProducts<ProductViewModel>(id, search);
             }
             else
             {
-                products = this.productService.GetAllProducts<ProductViewModel>();
+                products = this.productService.GetAllProducts<ProductViewModel>(search);
             }
 
             return this.View(products.ToList());
@@ -89,10 +89,16 @@
         }
 
         [HttpPost]
-        public IActionResult Edit(ProductViewModel pr)
+        public async Task<IActionResult> Edit(ProductViewModel pr)
         {
             var product = AutoMapperConfig.MapperInstance.Map<Product>(pr);
-            this.productService.EditProduct(product);
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(pr);
+            }
+
+            await this.productService.EditProduct(product);
             return this.RedirectToAction("Index", "Products");
         }
 
@@ -100,10 +106,11 @@
         public IActionResult Edit(Guid id)
         {
             var pr = this.productService.GetProductById(id);
-            var product = AutoMapperConfig.MapperInstance.Map<ProductViewModel>(pr);
             var clients = this.clientService.GetAllClients<ClientDropDownViewModel>();
+            var product = AutoMapperConfig.MapperInstance.Map<ProductViewModel>(pr);
             product.Clients = clients;
             return this.View(product);
+
         }
 
         [HttpGet]

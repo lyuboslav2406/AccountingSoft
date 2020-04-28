@@ -30,25 +30,27 @@
                 product.SinglePrice *= 1.2M;
             }
 
+            product.Sum = product.SinglePrice * product.Qty;
+
             await this.productRepository.AddAsync(product);
             await this.productRepository.SaveChangesAsync();
         }
 
-        public async Task<Guid> CreateAsync(string name, decimal qty, decimal singlePrice, System.Guid clientId)
-        {
-            var product = new Product
-            {
-                ProductName = name,
-                Qty = qty,
-                SinglePrice = singlePrice,
-                Sum = qty * singlePrice,
-                ClientId = clientId,
-            };
+        //public async Task<Guid> CreateAsync(string name, decimal qty, decimal singlePrice, System.Guid clientId)
+        //{
+        //    var product = new Product
+        //    {
+        //        ProductName = name,
+        //        Qty = qty,
+        //        SinglePrice = singlePrice,
+        //        Sum = qty * singlePrice,
+        //        ClientId = clientId,
+        //    };
 
-            await this.productRepository.AddAsync(product);
-            await this.productRepository.SaveChangesAsync();
-            return product.Id;
-        }
+        //    await this.productRepository.AddAsync(product);
+        //    await this.productRepository.SaveChangesAsync();
+        //    return product.Id;
+        //}
 
         public async Task<bool> DeleteAllClientProducts(Client c)
         {
@@ -71,24 +73,42 @@
 
         public async Task EditProduct(Product product)
         {
+            var findClient = this.clientRepository.Find(product.ClientId);
+            if (findClient.DDS)
+            {
+                product.SinglePrice *= 1.2M;
+            }
+
+            product.Sum = product.SinglePrice * product.Qty;
+
             this.productRepository.Update(product);
             await this.productRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAllProducts<T>(Guid id)
+        public IEnumerable<T> GetAllProducts<T>(Guid id, string search = null)
         {
-            var products = this.productRepository
-                 .All().Where(p => p.ClientId == id)
+            IQueryable<Product> products = this.productRepository
+                 .All()
                  .OrderByDescending(x => x.CreatedOn);
+
+            if (search != null)
+            {
+                products = products.Where(a => a.ProductName.Contains(search));
+            }
 
             return products.To<T>();
         }
 
-        public IEnumerable<T> GetAllProducts<T>()
+        public IEnumerable<T> GetAllProducts<T>(string search = null)
         {
-            var products = this.productRepository
+            IQueryable<Product> products = this.productRepository
                  .All()
                  .OrderByDescending(x => x.CreatedOn);
+
+            if (search != null)
+            {
+                products = products.Where(a => a.ProductName.Contains(search));
+            }
 
             return products.To<T>();
         }

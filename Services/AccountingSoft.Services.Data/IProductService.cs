@@ -11,15 +11,15 @@
     {
         Task AddProduct(Product product);
 
-        Task<System.Guid> CreateAsync(string name, decimal qty, decimal singlePrice, System.Guid clientId);
+        //Task<System.Guid> CreateAsync(string name, decimal qty, decimal singlePrice, System.Guid clientId);
 
         Task EditProduct(Product product);
 
         Task DeleteProduct(Product product);
 
-        IEnumerable<T> GetAllProducts<T>(Guid id);
+        IEnumerable<T> GetAllProducts<T>(Guid id, string search = null);
 
-        IEnumerable<T> GetAllProducts<T>();
+        IEnumerable<T> GetAllProducts<T>(string search = null);
 
         Product GetProductById(Guid id);
 
