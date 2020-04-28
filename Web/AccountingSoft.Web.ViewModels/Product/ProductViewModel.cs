@@ -7,15 +7,21 @@
     using AccountingSoft.Web.ViewModels.Client;
 
     using Client = AccountingSoft.Web.ViewModels.Client.ClientViewModel;
+    using System.ComponentModel.DataAnnotations;
 
     public class ProductViewModel : IMapTo<Product>, IMapFrom<Product>
     {
         public Guid Id { get; set; }
 
+        [Required]
+        [MaxLength(50)]
+        [MinLength(3)]
         public string ProductName { get; set; }
 
+        [Required]
         public decimal Qty { get; set; }
 
+        [Required]
         public decimal SinglePrice { get; set; }
 
         public decimal Sum { get; set; }

@@ -14,10 +14,14 @@
         [Key]
         public Guid Id { get; set; }
 
+        [Required]
+        [MaxLength(9)]
         public string ProductName { get; set; }
 
+        [Required]
         public decimal Qty { get; set; }
 
+        [Required]
         public decimal SinglePrice { get; set; }
 
         public decimal Sum { get; set; }

@@ -6,40 +6,48 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-dark.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container" id="navbarColor01">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />                                  
-                    <ul class="navbar-nav flex-grow-1">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link text-dark" data-toggle="dropdown" role="button" aria-expanded="false">Клиент <span class="caret"></span></a>
+                            <a href="#" class="nav-link" data-toggle="dropdown" role="button" aria-expanded="false">Клиент <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a asp-area="" asp-controller="Clients" asp-action="Index">Всички клиенти</a></li>
-                                <li><a asp-area="" asp-controller="Clients" asp-action="Create">Създай клиент</a></li>
+                                <li class="dropdown-item">
+                                    <a asp-area="" asp-controller="Clients" asp-action="Index" style="color:azure">Всички клиенти</a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a asp-area="" asp-controller="Clients" asp-action="Create" style="color:azure">Създай клиент</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link text-dark" data-toggle="dropdown" role="button" aria-expanded="false">Продукт <span class="caret"></span></a>
+                            <a href="#" class="nav-link" data-toggle="dropdown" role="button" aria-expanded="false">Продукт <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a asp-area="" asp-controller="Products" asp-action="Index">Всички продукти</a></li>
-                                <li><a asp-area="" asp-controller="Products" asp-action="Create">Създай продукт</a></li>
+                                <li class="dropdown-item">
+                                    <a asp-area="" asp-controller="Products" asp-action="Index" style="color:azure">Всички продукти</a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a asp-area="" asp-controller="Products" asp-action="Create" style="color:azure">Създай продукт</a>
+                                </li>
                             </ul>
                         </li>
-                        <li class="nav-link text-dark" onchange="SaveClientToMemoryCache()" >
+                        <li class="nav-link " onchange="SaveClientToMemoryCache()">
                             @await Component.InvokeAsync("Client")
-                        </li>                        
+                        </li>
                     </ul>
                 </div>
             </div>

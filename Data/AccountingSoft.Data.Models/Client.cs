@@ -16,8 +16,12 @@ namespace AccountingSoft.Data.Models
         [Key]
         public Guid Id { get; set; }
 
+        [Required]
+        [MaxLength(50)]
         public string Name { get; set; }
 
+        [Required]
+        [MaxLength(9)]
         public string EIK { get; set; }
 
         public bool DDS { get; set; }

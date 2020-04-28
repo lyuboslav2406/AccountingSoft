@@ -155,7 +155,9 @@ namespace AccountingSoft.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EIK")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(9)")
+                        .HasMaxLength(9);
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -164,7 +166,9 @@ namespace AccountingSoft.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -179,7 +183,7 @@ namespace AccountingSoft.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ClientId")
+                    b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedOn")
@@ -195,7 +199,9 @@ namespace AccountingSoft.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(9)")
+                        .HasMaxLength(9);
 
                     b.Property<decimal>("Qty")
                         .HasColumnType("decimal(18,2)");
@@ -355,7 +361,9 @@ namespace AccountingSoft.Data.Migrations
                 {
                     b.HasOne("AccountingSoft.Data.Models.Client", "Client")
                         .WithMany("Products")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
