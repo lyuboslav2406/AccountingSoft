@@ -17,6 +17,7 @@
         private readonly IClientService clientService;
         private readonly IProductService productService;
         private IMemoryCache memoryCache;
+        private const int ItemsPerPage = 5;
 
         public ClientsController(IClientService clientService, IProductService productService, IMemoryCache memoryCache)
         {
@@ -56,11 +57,24 @@
             return this.RedirectToAction("Index", "Clients");
         }
 
-        public IActionResult Index(string search = null)
+        public IActionResult Index(int page = 1, string search = null)
         {
-            var list = this.clientService.GetAllClients<ClientViewModel>(search);
+            var viewModel = new AllClientViewModel();
 
-            return this.View(list.ToList());
+            viewModel.Clients = this.clientService.GetAllClients<ClientViewModel>(search, ItemsPerPage, (page - 1) * ItemsPerPage);
+
+            var count = this.clientService.GetCount();
+
+            viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+
+            if (viewModel.PagesCount == 0)
+            {
+                viewModel.PagesCount = 1;
+            }
+
+            viewModel.CurrentPage = page;
+
+            return this.View(viewModel);
         }
 
         [HttpGet]

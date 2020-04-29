@@ -63,17 +63,29 @@ namespace AccountingSoft.Services.Data
             this.clientRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAllClients<T>(string search = null)
+        public IEnumerable<T> GetAllClients<T>(string search = null, int? take = null, int skip = 0)
         {
             IQueryable<Client> query =
-               this.clientRepository.All().OrderBy(x => x.Name);
+               this.clientRepository.All().OrderBy(x => x.Name).Skip(skip);
 
             if (search != null)
             {
                 query = query.Where(a => a.EIK.Contains(search));
             }
 
-            return query.To<T>().ToList();
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>();
+        }
+
+        public int GetCount()
+        {
+            var count = this.clientRepository.All().Count();
+
+            return count;
         }
 
         public List<Client> GetListOfClients()

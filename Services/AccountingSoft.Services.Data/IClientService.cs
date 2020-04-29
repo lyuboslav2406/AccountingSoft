@@ -15,12 +15,14 @@
 
         Task<bool> DeleteClient(Client c);
 
-        IEnumerable<T> GetAllClients<T>(string search = null);
+        IEnumerable<T> GetAllClients<T>(string search = null, int? take = null, int skip = 0);
 
         Task<System.Guid> CreateAsync(string name, string EIK, bool DDS);
 
         List<Client> GetListOfClients();
 
         Task<Client> GetSignleClient(Guid client);
+
+        int GetCount();
     }
 }
