@@ -17,6 +17,7 @@
         private readonly IProductService productService;
         private readonly IClientService clientService;
         private IMemoryCache memoryCache;
+        private const int ItemsPerPage = 5;
 
         public ProductsController(IProductService productService, IClientService clientService, IMemoryCache memoryCache)
         {
@@ -25,23 +26,35 @@
             this.memoryCache = memoryCache;
         }
 
-        public IActionResult Index(string search = null)
+        public IActionResult Index(int page = 1, string search = null)
         {
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
-            IEnumerable<ProductViewModel> products;
+
+            var products = new AllProductsViewModel();
 
             if (idString != null)
             {
                 Guid id = new Guid(idString);
-                products = this.productService.GetAllProducts<ProductViewModel>(id, search);
+                products.Products = this.productService.GetAllProducts<ProductViewModel>(id, search, ItemsPerPage, (page - 1) * ItemsPerPage);
             }
             else
             {
-                products = this.productService.GetAllProducts<ProductViewModel>(search);
+                products.Products = this.productService.GetAllProducts<ProductViewModel>(search, ItemsPerPage, (page - 1) * ItemsPerPage);
             }
 
-            return this.View(products.ToList());
+            var count = this.productService.GetCount();
+
+            products.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+
+            if (products.PagesCount == 0)
+            {
+                products.PagesCount = 1;
+            }
+
+            products.CurrentPage = page;
+
+            return this.View(products);
         }
 
         public IActionResult Create()

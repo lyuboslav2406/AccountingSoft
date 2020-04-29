@@ -17,12 +17,14 @@
 
         Task DeleteProduct(Product product);
 
-        IEnumerable<T> GetAllProducts<T>(Guid id, string search = null);
+        IEnumerable<T> GetAllProducts<T>(Guid id, string search = null, int? take = null, int skip = 0);
 
-        IEnumerable<T> GetAllProducts<T>(string search = null);
+        IEnumerable<T> GetAllProducts<T>(string search = null, int? take = null, int skip = 0);
 
         Product GetProductById(Guid id);
 
         Task<bool> DeleteAllClientProducts(Client c);
+
+        int GetCount();
     }
 }

@@ -85,32 +85,50 @@
             await this.productRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAllProducts<T>(Guid id, string search = null)
+        public IEnumerable<T> GetAllProducts<T>(Guid id, string search = null, int? take = null, int skip = 0)
         {
             IQueryable<Product> products = this.productRepository
                  .All()
-                 .OrderByDescending(x => x.CreatedOn);
+                 .OrderByDescending(x => x.CreatedOn)
+                 .Skip(skip);
 
             if (search != null)
             {
                 products = products.Where(a => a.ProductName.Contains(search));
+            }
+
+            if (take.HasValue)
+            {
+                products = products.Take(take.Value);
             }
 
             return products.To<T>();
         }
 
-        public IEnumerable<T> GetAllProducts<T>(string search = null)
+        public IEnumerable<T> GetAllProducts<T>(string search = null, int? take = null, int skip = 0)
         {
             IQueryable<Product> products = this.productRepository
                  .All()
-                 .OrderByDescending(x => x.CreatedOn);
+                 .OrderByDescending(x => x.CreatedOn)
+                 .Skip(skip);
 
             if (search != null)
             {
                 products = products.Where(a => a.ProductName.Contains(search));
             }
 
+            if (take.HasValue)
+            {
+                products = products.Take(take.Value);
+            }
+
             return products.To<T>();
+        }
+
+        public int GetCount()
+        {
+            var count = this.productRepository.All().Count();
+            return count;
         }
 
         public Product GetProductById(Guid id)
