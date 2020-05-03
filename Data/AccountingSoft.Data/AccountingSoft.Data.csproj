@@ -11,6 +11,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200418095450_InitialDatabase.cs" />
+    <Compile Remove="Migrations\20200418095450_InitialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20200502150251_AddSoldProducts.cs" />
+    <Compile Remove="Migrations\20200502150251_AddSoldProducts.Designer.cs" />
+    <Compile Remove="Migrations\20200502150738_SoldProduct.cs" />
+    <Compile Remove="Migrations\20200502150738_SoldProduct.Designer.cs" />
+    <Compile Remove="Migrations\20200502151241_soldproducts.cs" />
+    <Compile Remove="Migrations\20200502151241_soldproducts.Designer.cs" />
+    <Compile Remove="Migrations\20200502153107_soldProduct.cs" />
+    <Compile Remove="Migrations\20200502153107_soldProduct.Designer.cs" />
+    <Compile Remove="Migrations\20200502154902_sold.cs" />
+    <Compile Remove="Migrations\20200502154902_sold.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 

@@ -1,9 +1,10 @@
 ﻿namespace AccountingSoft.Data.Models
 {
-    using AccountingSoft.Data.Common.Models;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+
+    using AccountingSoft.Data.Common.Models;
 
     public class Product : BaseDeletableModel<int>
     {
@@ -15,7 +16,8 @@
         public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(9)]
+        [MaxLength(50)]
+        [MinLength(3)]
         public string ProductName { get; set; }
 
         [Required]
@@ -30,5 +32,8 @@
 
         [ForeignKey("ClientId")]
         public Client Client { get; set; }
+
+        [ForeignKey("SoldProductId")]
+        public SoldProduct SoldProduct { get; set; }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccountingSoft.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200418095450_InitialDatabase")]
-    partial class InitialDatabase
+    [Migration("20200502155518_initialDatabase")]
+    partial class initialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -157,7 +157,9 @@ namespace AccountingSoft.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EIK")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(9)")
+                        .HasMaxLength(9);
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -166,7 +168,9 @@ namespace AccountingSoft.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -181,7 +185,7 @@ namespace AccountingSoft.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ClientId")
+                    b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedOn")
@@ -197,13 +201,18 @@ namespace AccountingSoft.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<decimal>("Qty")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("SinglePrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("SoldProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Sum")
                         .HasColumnType("decimal(18,2)");
@@ -213,6 +222,10 @@ namespace AccountingSoft.Data.Migrations
                     b.HasIndex("ClientId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("SoldProductId")
+                        .IsUnique()
+                        .HasFilter("[SoldProductId] IS NOT NULL");
 
                     b.ToTable("Products");
                 });
@@ -247,6 +260,25 @@ namespace AccountingSoft.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Settings");
+                });
+
+            modelBuilder.Entity("AccountingSoft.Data.Models.SoldProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("SoldQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("SoldProducts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -357,7 +389,22 @@ namespace AccountingSoft.Data.Migrations
                 {
                     b.HasOne("AccountingSoft.Data.Models.Client", "Client")
                         .WithMany("Products")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AccountingSoft.Data.Models.SoldProduct", "SoldProduct")
+                        .WithOne()
+                        .HasForeignKey("AccountingSoft.Data.Models.Product", "SoldProductId");
+                });
+
+            modelBuilder.Entity("AccountingSoft.Data.Models.SoldProduct", b =>
+                {
+                    b.HasOne("AccountingSoft.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
