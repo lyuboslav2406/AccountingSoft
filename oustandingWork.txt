@@ -5,4 +5,5 @@
 8. exception handling
 10. edint client buggvas
 13. edit product bug if single price is changed how to check and know if we need to apply dds again
-14. da 
+14. da направим някъде да показва кой клиент избран в момента, просто да пише еик-то
+15. пдф-а да има един отделен за продукт  и един отделен за всичките му изписвание
