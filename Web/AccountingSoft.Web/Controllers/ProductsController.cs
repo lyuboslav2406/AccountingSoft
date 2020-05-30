@@ -141,15 +141,22 @@
         {
             var product = AutoMapperConfig.MapperInstance.Map<Product>(pr);
 
-            if (!this.ModelState.IsValid)
+            if (pr.SellingQty > pr.Qty)
             {
                 return this.View(pr);
             }
-            product.Id = Guid.NewGuid();
-            product.Qty = product.Qty * (-1);
-            await this.productService.AddProduct(product);
+            else
+            {
+                await this.productService.AddSellingProduct(product, pr.SellingQty);
+                return this.RedirectToAction("Index", "Products");
+            }
+        }
 
-            return this.RedirectToAction("Index", "Products");
+        public IActionResult AllSoldProducts(Guid id)
+        {
+            var allSold = new AllSoldProductsViewModel();
+            allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(id);
+            return this.View(allSold);
         }
     }
 }

@@ -32,8 +32,5 @@
 
         [ForeignKey("ClientId")]
         public Client Client { get; set; }
-
-        [ForeignKey("SoldProductId")]
-        public SoldProduct SoldProduct { get; set; }
     }
 }

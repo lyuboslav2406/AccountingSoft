@@ -56,11 +56,11 @@ namespace AccountingSoft.Services.Data
             }
         }
 
-        public void EditClient(Client c)
+        public async void EditClient(Client c)
         {
             this.clientRepository.Update(c);
 
-            this.clientRepository.SaveChangesAsync();
+            await this.clientRepository.SaveChangesAsync();
         }
 
         public IEnumerable<T> GetAllClients<T>(string search = null, int? take = null, int skip = 0)

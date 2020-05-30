@@ -11,7 +11,7 @@
     {
         Task AddProduct(Product product);
 
-        //Task<System.Guid> CreateAsync(string name, decimal qty, decimal singlePrice, System.Guid clientId);
+        Task AddSellingProduct(Product product, decimal sellingQty);
 
         Task EditProduct(Product product);
 
@@ -20,6 +20,8 @@
         IEnumerable<T> GetAllProducts<T>(Guid id, string search = null, int? take = null, int skip = 0);
 
         IEnumerable<T> GetAllProducts<T>(string search = null, int? take = null, int skip = 0);
+
+        IEnumerable<T> GetAllSoldProducts<T>(Guid id);
 
         Product GetProductById(Guid id);
 

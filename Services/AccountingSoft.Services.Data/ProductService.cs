@@ -15,11 +15,13 @@
     {
         private readonly IDeletableEntityRepository<Product> productRepository;
         private readonly IDeletableEntityRepository<Client> clientRepository;
+        private readonly IDeletableEntityRepository<SoldProduct> soldProductRepository;
 
-        public ProductService(IDeletableEntityRepository<Product> productRepository, IDeletableEntityRepository<Client> clientRepository)
+        public ProductService(IDeletableEntityRepository<Product> productRepository, IDeletableEntityRepository<Client> clientRepository, IDeletableEntityRepository<SoldProduct> soldProductRepository)
         {
             this.productRepository = productRepository;
             this.clientRepository = clientRepository;
+            this.soldProductRepository = soldProductRepository;
         }
 
         public async Task AddProduct(Product product)
@@ -36,21 +38,20 @@
             await this.productRepository.SaveChangesAsync();
         }
 
-        //public async Task<Guid> CreateAsync(string name, decimal qty, decimal singlePrice, System.Guid clientId)
-        //{
-        //    var product = new Product
-        //    {
-        //        ProductName = name,
-        //        Qty = qty,
-        //        SinglePrice = singlePrice,
-        //        Sum = qty * singlePrice,
-        //        ClientId = clientId,
-        //    };
-
-        //    await this.productRepository.AddAsync(product);
-        //    await this.productRepository.SaveChangesAsync();
-        //    return product.Id;
-        //}
+        public async Task AddSellingProduct(Product product, decimal sellingQty)
+        {
+            var soldProduct = new SoldProduct()
+            {
+                Id = Guid.NewGuid(),
+                ProductId = product.Id,
+                SoldQty = sellingQty
+            };
+            product.Qty = product.Qty - sellingQty;
+            await this.soldProductRepository.AddAsync(soldProduct);
+            await this.soldProductRepository.SaveChangesAsync();
+            this.productRepository.Update(product);
+            await this.productRepository.SaveChangesAsync();
+        }
 
         public async Task<bool> DeleteAllClientProducts(Client c)
         {
@@ -99,7 +100,7 @@
 
             if (take.HasValue)
             {
-                products = products.Take(take.Value);
+                products = products.Where(a => a.ClientId == id).Take(take.Value);
             }
 
             return products.To<T>();
@@ -121,6 +122,15 @@
             {
                 products = products.Take(take.Value);
             }
+
+            return products.To<T>();
+        }
+
+        public IEnumerable<T> GetAllSoldProducts<T>(Guid id)
+        {
+            IQueryable<SoldProduct> products = this.soldProductRepository
+                 .All().Where(a => a.ProductId == id).Include(a => a.Product)
+                 .OrderByDescending(x => x.CreatedOn);
 
             return products.To<T>();
         }

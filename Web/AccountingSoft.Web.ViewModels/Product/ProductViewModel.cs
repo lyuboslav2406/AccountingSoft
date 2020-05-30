@@ -21,6 +21,8 @@
         [Required]
         public decimal Qty { get; set; }
 
+        public decimal SellingQty { get; set; }
+
         [Required]
         public decimal SinglePrice { get; set; }
 

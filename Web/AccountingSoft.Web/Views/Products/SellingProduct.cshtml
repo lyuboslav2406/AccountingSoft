@@ -16,7 +16,7 @@
 
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label">Име</label>
-                <input asp-for="ProductName" class="form-control" />
+                <input readonly="readonly" asp-for="ProductName" class="form-control" />
                 <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -24,9 +24,16 @@
                 <input asp-for="Qty" class="form-control" />
                 <span asp-validation-for="Qty" class="text-danger"></span>
             </div>
-                
+
+            <div class="form-group">
+                <label asp-for="SellingQty" class="control-label">Количество за изписване</label>
+                <input asp-for="SellingQty" class="form-control" />
+                <span asp-validation-for="SellingQty" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="hidden" asp-for="Sum" class="form-control" />
+                <input type="hidden" asp-for="Qty" class="form-control" />
                 <input type="hidden" asp-for="SinglePrice" class="form-control" />
                 <input type="hidden" asp-for="Client.Id" class="form-control" asp-items="clients"></input>
             </div>
