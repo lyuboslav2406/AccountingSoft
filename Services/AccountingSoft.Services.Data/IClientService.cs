@@ -11,7 +11,7 @@
     {
         Task AddClient(Client c);
 
-        void EditClient(Client c);
+        bool EditClient(Client client);
 
         Task<bool> DeleteClient(Client c);
 
