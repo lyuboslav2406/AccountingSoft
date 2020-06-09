@@ -55,7 +55,6 @@
             services.AddRazorPages();
             services.AddMemoryCache();
             services.AddSingleton(this.configuration);
-
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -64,6 +63,8 @@
 
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IViewRenderService, ViewRenderService>();
+            services.AddTransient<IPdfService, PdfService>();
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();

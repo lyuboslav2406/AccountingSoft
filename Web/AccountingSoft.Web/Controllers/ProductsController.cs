@@ -11,19 +11,29 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.Extensions.Hosting;
 
     public class ProductsController : BaseController
     {
         private readonly IProductService productService;
         private readonly IClientService clientService;
+        private readonly IViewRenderService viewRenderService;
+        private readonly IPdfService htmlToPdfConverter;
+        private readonly IHostingEnvironment environment;
         private IMemoryCache memoryCache;
         private const int ItemsPerPage = 5;
 
-        public ProductsController(IProductService productService, IClientService clientService, IMemoryCache memoryCache)
+        public ProductsController(IProductService productService, IClientService clientService, 
+            IMemoryCache memoryCache, IViewRenderService viewRenderService, IPdfService htmlToPdfConverter,
+            IHostingEnvironment environment)
         {
             this.productService = productService;
             this.clientService = clientService;
             this.memoryCache = memoryCache;
+
+            this.viewRenderService = viewRenderService;
+            this.htmlToPdfConverter = htmlToPdfConverter;
+            this.environment = environment;
         }
 
         public IActionResult Index(int page = 1, string search = null)
@@ -91,6 +101,7 @@
             return this.View(product);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Delete(ProductViewModel p)
         {
@@ -156,7 +167,22 @@
         {
             var allSold = new AllSoldProductsViewModel();
             allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(id);
+
+
+            this.memoryCache.Set("SelectedProductId", id.ToString());
             return this.View(allSold);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConvertToPdf()
+        {
+            object id;
+            id = this.memoryCache.Get("SelectedProductId");
+            var allSold = new AllSoldProductsViewModel();
+            allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(Guid.Parse(id.ToString()));
+            var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/AllSoldProducts.cshtml", allSold);
+            var fileContents = this.htmlToPdfConverter.Convert(this.environment.ContentRootPath, htmlData);
+            return this.File(fileContents, "application/pdf");
         }
     }
 }
