@@ -44,4 +44,8 @@
     <ProjectReference Include="..\..\Services\AccountingSoft.Services.Messaging\AccountingSoft.Services.Messaging.csproj" />
     <ProjectReference Include="..\AccountingSoft.Web.ViewModels\AccountingSoft.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\fonts\" />
+  </ItemGroup>
 </Project>

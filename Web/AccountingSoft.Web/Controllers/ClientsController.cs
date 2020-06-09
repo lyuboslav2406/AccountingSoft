@@ -28,8 +28,23 @@
 
         public bool SaveClientToMemoryCache(string selected)
         {
+            var clientGuid = Guid.Parse(selected);
+            var client = this.clientService.GetSignleClient(clientGuid);
+            this.memoryCache.Set("ClientName", client.Result.Name);
             this.memoryCache.Set("ClientSelected", selected);
             return true;
+        }
+
+        public IActionResult GetClientName()
+        {
+            object clientName;
+
+            clientName = this.memoryCache.Get("ClientName");
+            if (clientName == null)
+            {
+                clientName = string.Empty;
+            }
+            return this.Json(clientName.ToString());
         }
 
         public IActionResult ById()

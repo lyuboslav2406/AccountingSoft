@@ -47,12 +47,12 @@
                         </li>
                         <li class="nav-link " onchange="SaveClientToMemoryCache()">
                             @await Component.InvokeAsync("Client")
-                        </li>
+                        </li>                        
                     </ul>
                 </div>
             </div>
         </nav>
-    </header>
+    </header>с
     
     <div class="container">
         <partial name="_CookieConsentPartial" />
@@ -63,7 +63,10 @@
     
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - АтлансТех
+        </div>
+        <div id="clientName" class="clientName" onload="GetClientName()">
+
         </div>
     </footer>
 
@@ -74,6 +77,9 @@
     <script src="~/js/site.min.js" asp-append-version="true"></script>
     @this.RenderSection("Scripts", required: false)
     <script type="text/javascript">
+        window.onload = function() {
+            GetClientName();
+        }
         function SaveClientToMemoryCache() {
             jQuery.ajaxSettings.traditional = true;
             var selected = $('#selectClient').val();
@@ -85,6 +91,24 @@
                 contentType: "application/html; charset-utf-8",
                 success: function () {
                     alert("Селектиран клиент за работа " + selected + " !");
+                    GetClientName();
+                },
+                error: function () {
+                    alert("ujs");
+                }
+                
+            });
+        }
+        function GetClientName() {
+            $.ajax({
+                url: "/Clients/GetClientName",
+                type: "GET",
+                data: {  },
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    $('#clientName').empty();
+                    $("<p>Избран Клиент: " + data + "</p>").appendTo("#clientName");
                 },
                 error: function () {
                     alert("ujs");
