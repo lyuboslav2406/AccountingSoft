@@ -46,7 +46,7 @@
             if (idString != null)
             {
                 Guid id = new Guid(idString);
-                products.Products = this.productService.GetAllProducts<ProductViewModel>(id, search, ItemsPerPage, (page - 1) * ItemsPerPage);
+                products.Products = this.productService.GetAllProducts<ProductViewModel>(id, search, ItemsPerPage, (page - 1) * ItemsPerPage, false);
             }
             else
             {
@@ -178,8 +178,16 @@
         {
             object id;
             id = this.memoryCache.Get("SelectedProductId");
+
+            object clientName;
+            this.memoryCache.TryGetValue("ClientName", out clientName);
+
+            var product = this.productService.GetProductById(Guid.Parse(id.ToString()));
             var allSold = new AllSoldProductsViewModel();
             allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(Guid.Parse(id.ToString()));
+            allSold.TotalSoldQty = allSold.SoldProducts.Sum(s => s.SoldQty);
+            allSold.SoldSum = (allSold.TotalSoldQty * (-1)) * product.SinglePrice;
+            allSold.ClientName = clientName.ToString();
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/AllSoldProductsForPdf.cshtml", allSold);
             var fileContents = this.htmlToPdfConverter.Convert("G:\\gitHubRepos\\AS\\AccountingSoft\\Web\\AccountingSoft.Web\\wwwroot\\js\\", htmlData);
             return this.File(fileContents, "application/pdf;charset=utf-8");
@@ -191,17 +199,20 @@
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
 
+            object clientName;
+            this.memoryCache.TryGetValue("ClientName", out clientName);
+
             var products = new AllProductsViewModel();
 
-            if (idString != null)
+            Guid id = new Guid(idString);
+            products.Products = this.productService.GetAllProducts<ProductViewModel>(id, null, null, 0, true);
+            products.ClientName = clientName.ToString();
+            foreach (var p in products.Products)
             {
-                Guid id = new Guid(idString);
-                products.Products = this.productService.GetAllProducts<ProductViewModel>(id);
+                var sum = p.Qty * p.SinglePrice;
+                products.TotalSum += sum;
             }
-            else
-            {
-                products.Products = this.productService.GetAllProducts<ProductViewModel>();
-            }
+
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/IndexForPdf.cshtml", products);
             var fileContents = this.htmlToPdfConverter.Convert("G:\\gitHubRepos\\AS\\AccountingSoft\\Web\\AccountingSoft.Web\\wwwroot\\js\\", htmlData);
             return this.File(fileContents, "application/pdf;charset=utf-8");

@@ -13,6 +13,12 @@ namespace AccountingSoft.Web.ViewModels.Product
 
         public decimal SoldQty { get; set; }
 
+        public decimal SoldSum { get; set; }
+
         public DateTime CreatedOn { get; set; }
+
+        public decimal TotalSoldQty { get; set; }
+
+        public string ClientName { get; set; }
     }
 }

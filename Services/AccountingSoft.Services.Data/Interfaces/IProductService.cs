@@ -17,7 +17,7 @@
 
         Task DeleteProduct(Product product);
 
-        IEnumerable<T> GetAllProducts<T>(Guid id, string search = null, int? take = null, int skip = 0);
+        IEnumerable<T> GetAllProducts<T>(Guid id, string search = null, int? take = null, int skip = 0, bool forPdf = false);
 
         IEnumerable<T> GetAllProducts<T>(string search = null, int? take = null, int skip = 0);
 

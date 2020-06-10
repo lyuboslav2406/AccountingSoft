@@ -25,5 +25,9 @@
         public int PagesCount { get; set; }
 
         public int CurrentPage { get; set; }
+
+        public string ClientName { get; set; }
+
+        public decimal TotalSum { get; set; }
     }
 }

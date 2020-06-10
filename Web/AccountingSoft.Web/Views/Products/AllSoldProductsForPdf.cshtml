@@ -4,7 +4,7 @@
 }
 
 <meta http-equiv="content-type" content="text/html" ; charset="UTF-8">
-<h1>Изписани продукти</h1>
+<h1>Изписани продукти за клиент - @Model.ClientName</h1>
 
 <table class="table">
     <thead>
@@ -30,6 +30,7 @@
     <tbody>
         @foreach (var item in Model.SoldProducts)
         {
+            
             <tr>
 
                 <td>
@@ -51,3 +52,10 @@
         }
     </tbody>
 </table>
+<div>
+    
+    <hr />
+    Тотално Продадено Количество: @Model.TotalSoldQty    
+    <hr />
+    Тотално Продадена Сума: @Model.SoldSum
+</div>

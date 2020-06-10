@@ -68,6 +68,12 @@
 
         public async Task DeleteProduct(Product product)
         {
+            var listSoldProducts = this.soldProductRepository.All().Where(p => p.ProductId == product.Id).ToList();
+            foreach (var pr in listSoldProducts)
+            {
+                this.soldProductRepository.Delete(pr);
+            }
+            await this.soldProductRepository.SaveChangesAsync();
             this.productRepository.Delete(product);
             await this.productRepository.SaveChangesAsync();
         }
@@ -86,7 +92,7 @@
             await this.productRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAllProducts<T>(Guid id, string search = null, int? take = null, int skip = 0)
+        public IEnumerable<T> GetAllProducts<T>(Guid id, string search = null, int? take = null, int skip = 0, bool forPdf = false)
         {
             IQueryable<Product> products = this.productRepository
                  .All()
@@ -95,12 +101,17 @@
 
             if (search != null)
             {
-                products = products.Where(a => a.ProductName.Contains(search));
+                products = products.Where(a => a.ProductName.Contains(search) && a.Qty > 0);
             }
 
             if (take.HasValue)
             {
-                products = products.Where(a => a.ClientId == id).Take(take.Value);
+                products = products.Where(a => a.ClientId == id && a.Qty > 0).Take(take.Value);
+            }
+
+            if(forPdf)
+            {
+                products = products.Where(a => a.ClientId == id && a.Qty > 0);
             }
 
             return products.To<T>();
@@ -115,12 +126,12 @@
 
             if (search != null)
             {
-                products = products.Where(a => a.ProductName.Contains(search));
+                products = products.Where(a => a.ProductName.Contains(search) && a.Qty > 0);
             }
 
             if (take.HasValue)
             {
-                products = products.Take(take.Value);
+                products = products.Where(a => a.Qty > 0).Take(take.Value);
             }
 
             return products.To<T>();
