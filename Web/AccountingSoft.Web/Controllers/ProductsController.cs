@@ -180,9 +180,31 @@
             id = this.memoryCache.Get("SelectedProductId");
             var allSold = new AllSoldProductsViewModel();
             allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(Guid.Parse(id.ToString()));
-            var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/AllSoldProducts.cshtml", allSold);
+            var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/AllSoldProductsForPdf.cshtml", allSold);
             var fileContents = this.htmlToPdfConverter.Convert("G:\\gitHubRepos\\AS\\AccountingSoft\\Web\\AccountingSoft.Web\\wwwroot\\js\\", htmlData);
-            return this.File(fileContents, "application/pdf");
+            return this.File(fileContents, "application/pdf;charset=utf-8");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConvertToPdfAllProducts()
+        {
+            string idString = string.Empty;
+            this.memoryCache.TryGetValue("ClientSelected", out idString);
+
+            var products = new AllProductsViewModel();
+
+            if (idString != null)
+            {
+                Guid id = new Guid(idString);
+                products.Products = this.productService.GetAllProducts<ProductViewModel>(id);
+            }
+            else
+            {
+                products.Products = this.productService.GetAllProducts<ProductViewModel>();
+            }
+            var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/IndexForPdf.cshtml", products);
+            var fileContents = this.htmlToPdfConverter.Convert("G:\\gitHubRepos\\AS\\AccountingSoft\\Web\\AccountingSoft.Web\\wwwroot\\js\\", htmlData);
+            return this.File(fileContents, "application/pdf;charset=utf-8");
         }
     }
 }

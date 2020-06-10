@@ -30,30 +30,24 @@
     <tbody>
         @foreach (var item in Model.SoldProducts)
         {
-        <tr>
+            <tr>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.ProductName)
-            </td>
-            <td>
-                |
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoldQty)
-            </td>
-            <td>
-                |
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-        </tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.ProductName)
+                </td>
+                <td>
+                    |
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoldQty)
+                </td>
+                <td>
+                    |
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
-
-<div>
-    <a asp-action="Index">Назад</a>
-    @Html.ActionLink("Към Пдф", "ConvertToPdf", "Products")
-</div>
-

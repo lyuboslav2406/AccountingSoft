@@ -1,0 +1,77 @@
+﻿@model AccountingSoft.Web.ViewModels.Product.AllProductsViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+<meta http-equiv="content-type" content="text/html" ; charset="UTF-8">
+<h1>Продукти</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Име
+            </th>
+            <th>
+                |
+            </th>
+            <th>
+                Количество
+            </th>
+            <th>
+                |
+            </th>
+            <th>
+                Единична цена
+            </th>
+            <th>
+                |
+            </th>
+            <th>
+                Обща сума
+            </th>
+            <th>
+                |
+            </th>
+            <th>
+                Клиент
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Products)
+        {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                |
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                |
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SinglePrice)
+            </td>
+            <td>
+                |
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sum)
+            </td>
+            <td>
+                |
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.EIK)
+            </td>
+
+        </tr>
+        }
+    </tbody>
+</table>
+
