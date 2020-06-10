@@ -19,21 +19,24 @@ namespace AccountingSoft.Services.Data
         private readonly IRazorViewEngine razorViewEngine;
         private readonly ITempDataProvider tempDataProvider;
         private readonly IServiceProvider serviceProvider;
+        private readonly IHttpContextAccessor contextAccessor;
 
         public ViewRenderService(
             IRazorViewEngine razorViewEngine,
             ITempDataProvider tempDataProvider,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IHttpContextAccessor contextAccessor)
         {
             this.razorViewEngine = razorViewEngine;
             this.tempDataProvider = tempDataProvider;
             this.serviceProvider = serviceProvider;
+            this.contextAccessor = contextAccessor;
         }
 
         public async Task<string> RenderToStringAsync(string viewName, object model)
         {
             var httpContext = new DefaultHttpContext { RequestServices = this.serviceProvider };
-            var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
+            var actionContext = new ActionContext(this.contextAccessor.HttpContext, this.contextAccessor.HttpContext.GetRouteData(), new ActionDescriptor());
 
             using (var sw = new StringWriter())
             {

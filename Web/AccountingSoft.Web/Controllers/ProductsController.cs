@@ -181,7 +181,7 @@
             var allSold = new AllSoldProductsViewModel();
             allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(Guid.Parse(id.ToString()));
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/AllSoldProducts.cshtml", allSold);
-            var fileContents = this.htmlToPdfConverter.Convert(this.environment.ContentRootPath, htmlData);
+            var fileContents = this.htmlToPdfConverter.Convert("G:\\gitHubRepos\\AS\\AccountingSoft\\Web\\AccountingSoft.Web\\wwwroot\\js\\", htmlData);
             return this.File(fileContents, "application/pdf");
         }
     }

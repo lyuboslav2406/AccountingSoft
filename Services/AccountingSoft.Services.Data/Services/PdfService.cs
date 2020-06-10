@@ -11,17 +11,30 @@ namespace AccountingSoft.Services.Data
             var inputFileName = $"input_{Guid.NewGuid()}.html";
             var outputFileName = $"output_{Guid.NewGuid()}.pdf";
             File.WriteAllText($"{basePath}/{inputFileName}", htmlCode);
-            var startInfo = new ProcessStartInfo("phantomjs.exe")
+            Process cmd = new Process()
             {
-                WorkingDirectory = basePath,
-                Arguments = $"rasterize.js \"{inputFileName}\" \"{outputFileName}\" \"{1}\" \"{1}\"",
-                UseShellExecute = true,
+                StartInfo = new ProcessStartInfo()
+                {
+                    FileName = @"G:\gitHubRepos\AS\AccountingSoft\Web\AccountingSoft.Web\wwwroot\js\phantomjs.exe",
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    UseShellExecute = false,
+                    Arguments = $"rasterize.js \"{inputFileName}\" \"{outputFileName}\" \"А4\" \"Letter\"",
+                    WorkingDirectory = basePath,
+                },
             };
+            try
+            {
+                cmd.Start();
+            }
+            catch (Exception e)
+            {
 
-            var process = new Process { StartInfo = startInfo };
-            process.Start();
-
-            process.WaitForExit();
+                throw;
+            }
+            cmd.WaitForExit();
 
             var bytes = File.ReadAllBytes($"{basePath}/{outputFileName}");
 
