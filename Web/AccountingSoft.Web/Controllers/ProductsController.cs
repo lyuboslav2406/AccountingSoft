@@ -218,7 +218,7 @@
 
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/AllSoldProductsForPdf.cshtml", allSold);
 
-            var fileContents = this.htmlToPdfConverter.Convert("G:\\gitHubRepos\\AS\\AccountingSoft\\Web\\AccountingSoft.Web\\wwwroot\\js\\", htmlData);
+            var fileContents = this.htmlToPdfConverter.Convert("wwwroot/js/", htmlData);
 
             return this.File(fileContents, "application/pdf;charset=utf-8");
         }
@@ -245,7 +245,7 @@
 
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/IndexForPdf.cshtml", products);
 
-            var fileContents = this.htmlToPdfConverter.Convert("G:\\gitHubRepos\\AS\\AccountingSoft\\Web\\AccountingSoft.Web\\wwwroot\\js\\", htmlData);
+            var fileContents = this.htmlToPdfConverter.Convert("wwwroot/js/", htmlData);
 
             return this.File(fileContents, "application/pdf;charset=utf-8");
         }

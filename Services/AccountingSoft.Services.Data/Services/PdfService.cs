@@ -15,7 +15,7 @@ namespace AccountingSoft.Services.Data
             {
                 StartInfo = new ProcessStartInfo()
                 {
-                    FileName = @"G:\gitHubRepos\AS\AccountingSoft\Web\AccountingSoft.Web\wwwroot\js\phantomjs.exe",
+                    FileName = @"wwwroot/js/phantomjs.exe",
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     CreateNoWindow = false,
