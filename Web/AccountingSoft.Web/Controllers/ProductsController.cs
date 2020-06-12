@@ -36,7 +36,7 @@
             this.environment = environment;
         }
 
-        public IActionResult Index(int page = 1, string search = null)
+        public IActionResult Index(DateTime startDate, DateTime endDate, int page = 1, string search = null)
         {
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
@@ -46,15 +46,21 @@
 
             var products = new AllProductsViewModel();
 
-            if (idString != null)
+            if (idString != null || (startDate != DateTime.MinValue && endDate != DateTime.MinValue))
             {
                 Guid id = new Guid(idString);
-                products.Products = this.productService.GetAllProducts<ProductViewModel>(id, search, ItemsPerPage, (page - 1) * ItemsPerPage, false);
+                products.Products = this.productService.GetAllProducts<ProductViewModel>(id, startDate, endDate, search, ItemsPerPage, (page - 1) * ItemsPerPage, false);
             }
             else
             {
                 products.Products = this.productService.GetAllProducts<ProductViewModel>(search, ItemsPerPage, (page - 1) * ItemsPerPage);
             }
+
+            if (clientName == null)
+            {
+                clientName = "Не е избран клиент";
+            }
+
             products.ClientName = clientName.ToString();
             var count = this.productService.GetCount();
 
@@ -84,7 +90,7 @@
         {
             var product = AutoMapperConfig.MapperInstance.Map<Product>(input);
             product.Id = Guid.NewGuid();
-
+            product.CreatedOn = DateTime.Today;
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
             product.ClientId = Guid.Parse(idString);
@@ -169,18 +175,32 @@
             }
         }
 
-        public IActionResult AllSoldProducts(Guid id)
+        [HttpGet]
+        public IActionResult DeleteSellingProduct(Guid id)
+        {
+            var pr = this.productService.GetSoldProductById(id);
+            var product = AutoMapperConfig.MapperInstance.Map<SoldProductViewModel>(pr);
+            return this.View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSellingProduct(SoldProductViewModel pr)
+        {
+            var product = AutoMapperConfig.MapperInstance.Map<SoldProduct>(pr);
+            await this.productService.DeleteSoldProduct(product);
+            return this.RedirectToAction("Index", "Products");
+        }
+
+        public IActionResult AllSoldProducts(Guid id, DateTime startDate, DateTime endDate)
         {
             var allSold = new AllSoldProductsViewModel();
-            allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(id);
-
-
+            allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(id, startDate, endDate);
             this.memoryCache.Set("SelectedProductId", id.ToString());
             return this.View(allSold);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConvertToPdf()
+        public async Task<IActionResult> ConvertToPdfAllSoldProducts(DateTime startDate, DateTime endDate)
         {
             object id;
             id = this.memoryCache.Get("SelectedProductId");
@@ -189,18 +209,22 @@
             this.memoryCache.TryGetValue("ClientName", out clientName);
 
             var product = this.productService.GetProductById(Guid.Parse(id.ToString()));
+
             var allSold = new AllSoldProductsViewModel();
-            allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(Guid.Parse(id.ToString()));
+            allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(Guid.Parse(id.ToString()), startDate, endDate);
             allSold.TotalSoldQty = allSold.SoldProducts.Sum(s => s.SoldQty);
-            allSold.SoldSum = (allSold.TotalSoldQty * (-1)) * product.SinglePrice;
+            allSold.SoldSum = allSold.TotalSoldQty * product.SinglePrice;
             allSold.ClientName = clientName.ToString();
+
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/AllSoldProductsForPdf.cshtml", allSold);
+
             var fileContents = this.htmlToPdfConverter.Convert("G:\\gitHubRepos\\AS\\AccountingSoft\\Web\\AccountingSoft.Web\\wwwroot\\js\\", htmlData);
+
             return this.File(fileContents, "application/pdf;charset=utf-8");
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConvertToPdfAllProducts()
+        public async Task<IActionResult> ConvertToPdfAllProducts(DateTime startDate, DateTime endDate)
         {
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
@@ -211,7 +235,7 @@
             var products = new AllProductsViewModel();
 
             Guid id = new Guid(idString);
-            products.Products = this.productService.GetAllProducts<ProductViewModel>(id, null, null, 0, true);
+            products.Products = this.productService.GetAllProducts<ProductViewModel>(id, startDate, endDate, null, null, 0, true);
             products.ClientName = clientName.ToString();
             foreach (var p in products.Products)
             {
@@ -220,7 +244,9 @@
             }
 
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/IndexForPdf.cshtml", products);
+
             var fileContents = this.htmlToPdfConverter.Convert("G:\\gitHubRepos\\AS\\AccountingSoft\\Web\\AccountingSoft.Web\\wwwroot\\js\\", htmlData);
+
             return this.File(fileContents, "application/pdf;charset=utf-8");
         }
     }

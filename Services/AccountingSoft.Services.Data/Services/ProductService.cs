@@ -44,9 +44,11 @@
             {
                 Id = Guid.NewGuid(),
                 ProductId = product.Id,
-                SoldQty = sellingQty
+                SoldQty = sellingQty,
             };
+            soldProduct.CreatedOn = DateTime.Today;
             product.Qty = product.Qty - sellingQty;
+            product.Sum = product.Sum - (product.SinglePrice * sellingQty);
             await this.soldProductRepository.AddAsync(soldProduct);
             await this.soldProductRepository.SaveChangesAsync();
             this.productRepository.Update(product);
@@ -78,6 +80,17 @@
             await this.productRepository.SaveChangesAsync();
         }
 
+        public async Task DeleteSoldProduct(SoldProduct id)
+        {
+            var soldProduct = this.soldProductRepository.Find(id.Id);
+            var product = this.productRepository.Find(soldProduct.ProductId);
+            product.Sum = product.Sum + (soldProduct.SoldQty * product.SinglePrice);
+            product.Qty += soldProduct.SoldQty;
+            await this.soldProductRepository.SaveChangesAsync();
+            this.soldProductRepository.Delete(soldProduct);
+            await this.productRepository.SaveChangesAsync();
+        }
+
         public async Task EditProduct(Product product)
         {
             var findClient = this.clientRepository.Find(product.ClientId);
@@ -92,26 +105,40 @@
             await this.productRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAllProducts<T>(Guid id, string search = null, int? take = null, int skip = 0, bool forPdf = false)
+        public IEnumerable<T> GetAllProducts<T>(Guid id, DateTime startDate, DateTime endDate, string search = null, int? take = null, int skip = 0, bool forPdf = false)
         {
-            IQueryable<Product> products = this.productRepository
-                 .All()
-                 .OrderByDescending(x => x.CreatedOn)
-                 .Skip(skip);
+            IQueryable<Product> products = null;
 
             if (search != null)
             {
-                products = products.Where(a => a.ProductName.Contains(search) && a.Qty > 0);
+                 products = this.productRepository
+                 .All().Where(p => p.Qty > 0 && p.ProductName.Contains(search))
+                 .OrderByDescending(x => x.CreatedOn)
+                 .Skip(skip);
+            }
+            else if (startDate != DateTime.MinValue && endDate != DateTime.MinValue)
+            {
+                products = this.productRepository
+                 .All().Where(p => p.Qty > 0 && p.CreatedOn > startDate && p.CreatedOn < endDate)
+                 .OrderByDescending(x => x.CreatedOn)
+                 .Skip(skip);
+            }
+            else
+            {
+                products = this.productRepository
+                 .All().Where(p => p.Qty > 0)
+                 .OrderByDescending(x => x.CreatedOn)
+                 .Skip(skip);
             }
 
             if (take.HasValue)
             {
-                products = products.Where(a => a.ClientId == id && a.Qty > 0).Take(take.Value);
+                products = products.Where(a => a.ClientId == id).Take(take.Value);
             }
 
-            if(forPdf)
+            if (forPdf)
             {
-                products = products.Where(a => a.ClientId == id && a.Qty > 0);
+                products = products.Where(a => a.ClientId == id);
             }
 
             return products.To<T>();
@@ -137,12 +164,22 @@
             return products.To<T>();
         }
 
-        public IEnumerable<T> GetAllSoldProducts<T>(Guid id)
+        public IEnumerable<T> GetAllSoldProducts<T>(Guid id, DateTime startDate, DateTime endDate)
         {
-            IQueryable<SoldProduct> products = this.soldProductRepository
-                 .All().Where(a => a.ProductId == id).Include(a => a.Product)
-                 .OrderByDescending(x => x.CreatedOn);
+            IQueryable<SoldProduct> products = null;
 
+            if (startDate != DateTime.MinValue && endDate != DateTime.MinValue)
+            {
+                products = this.soldProductRepository
+                 .All().Where(a => a.ProductId == id && a.CreatedOn > startDate && a.CreatedOn < endDate).Include(a => a.Product)
+                 .OrderByDescending(x => x.CreatedOn);
+            }
+            else
+            {
+                products = this.soldProductRepository
+                                 .All().Where(a => a.ProductId == id).Include(a => a.Product)
+                                 .OrderByDescending(x => x.CreatedOn);
+            }
             return products.To<T>();
         }
 
@@ -154,7 +191,14 @@
 
         public Product GetProductById(Guid id)
         {
-            var product = this.productRepository.All().Where(x => x.Id == id).FirstOrDefault();
+            var product = this.productRepository.Find(id);
+            return product;
+        }
+
+        public SoldProduct GetSoldProductById(Guid id)
+        {
+            var product = this.soldProductRepository
+                                 .All().Where(a => a.Id == id).Include(a => a.Product).FirstOrDefault();
             return product;
         }
     }

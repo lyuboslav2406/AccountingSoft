@@ -1,0 +1,42 @@
+﻿@model AccountingSoft.Web.ViewModels.Product.SoldProductViewModel
+@{
+    ViewData["Title"] = "DeleteSoldProduct";
+}
+
+<h1>Изтрий изписване</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Количество
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SoldQty)
+        </dd>
+        <dt class="col-sm-2">
+            Дата
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+        <dt class="col-sm-2">
+            Ед цена
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.SinglePrice)
+        </dd>
+        <dt class="col-sm-2">
+            Име
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.ProductName)
+        </dd>
+    </dl>
+
+    <form asp-action="DeleteSellingProduct">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Изтрий" class="btn btn-danger" /> |
+        <a asp-action="AllSoldProducts">Назад</a>
+    </form>
+</div>

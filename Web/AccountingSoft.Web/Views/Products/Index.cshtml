@@ -6,6 +6,8 @@
 <h1>Продукти</h1>
 <form>
     <input type="search" name="Search" placeholder="Продукт" />
+    Филтрирай:
+    Начална дата: <input type="date" name="startDate"> Крайна дата: <input type="date" name="endDate">
     <input type="submit" class="btn btn-info" value="Търсене" asp-area="" asp-controller="Products" asp-action="Index" />
 </form>
 <hr />
@@ -30,37 +32,43 @@
             <th>
                 Клиент
             </th>
+            <th>
+                Дата
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Products)
         {
-            <tr>
+        <tr>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Qty)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SinglePrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sum)
-                </td>
-                <td>
-                    @Model.ClientName
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Редактирай</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a> |
-                    <a asp-action="SellingProduct" asp-route-id="@item.Id">Изписване на продукт</a> |
-                    <a asp-action="AllSoldProducts" asp-route-id="@item.Id">Всички изписвания</a> |
-                    <a asp-action="ConvertToPdfAllProducts">Към Пдф</a>
-                </td>
-            </tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SinglePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sum)
+            </td>
+            <td>
+                @Model.ClientName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Редактирай</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a> |
+                <a asp-action="SellingProduct" asp-route-id="@item.Id">Изписване на продукт</a> |
+                <a asp-action="AllSoldProducts" asp-route-id="@item.Id">Всички изписвания</a> |
+                <a asp-action="ConvertToPdfAllProducts">Към Пдф</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

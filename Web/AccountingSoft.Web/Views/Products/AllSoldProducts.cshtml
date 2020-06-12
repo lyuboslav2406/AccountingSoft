@@ -2,59 +2,68 @@
 @{
     ViewData["Title"] = "AllSoldProducts";
 }
+    <form>
+        <h1>Изписани продукти</h1>
+        Начална дата: <input type="date" name="startDate"> Крайна дата: <input type="date" name="endDate">
+        <input type="hidden" asp-for="Product.Id" name="id"/>
+        <input type="submit" class="btn btn-info" value="Филтрирай" asp-area="" asp-controller="Products" asp-action="AllSoldProducts" />
+        <meta http-equiv="content-type" content="text/html" ; charset="UTF-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Име
+                    </th>
+                    <th>
+                        |
+                    </th>
+                    <th>
+                        Продадено Количество
+                    </th>
+                    <th>
+                        |
+                    </th>
+                    <th>
+                        Дата на изписване
+                    </th>
+                    <th>
+                        Изтриване
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SoldProducts)
+                {
+                <tr>
 
-<meta http-equiv="content-type" content="text/html" ; charset="UTF-8">
-<h1>Изписани продукти</h1>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.ProductName)
+                    </td>
+                    <td>
+                        |
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SoldQty)
+                    </td>
+                    <td>
+                        |
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                    </td>   
+                    <td>
+                        <a asp-action="DeleteSellingProduct" asp-route-id="@item.Id">Изтрий</a> |
+                    </td>
+                </tr>
+                }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Име
-            </th>
-            <th>
-                |
-            </th>
-            <th>
-                Продадено Количество
-            </th>
-            <th>
-                |
-            </th>
-            <th>
-                Дата на изписване
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.SoldProducts)
-        {
-        <tr>
+            </tbody>
+        </table>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.ProductName)
-            </td>
-            <td>
-                |
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoldQty)
-            </td>
-            <td>
-                |
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-        </tr>
-        }
+        <div>
+            <a asp-action="Index">Назад</a> |            
+            <input type="submit" class="btn btn-info" value="Към ПДФ" asp-area="" asp-controller="Products" asp-action="ConvertToPdfAllSoldProducts" />
+        </div>
 
-    </tbody>
-</table>
-
-<div>
-    <a asp-action="Index">Назад</a>
-    @Html.ActionLink("Към Пдф", "ConvertToPdf", "Products")
-</div>
-
+    </form>

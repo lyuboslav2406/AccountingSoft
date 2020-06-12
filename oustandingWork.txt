@@ -1,8 +1,2 @@
-
-5. export kum csv/pdf na nalichnost za klient
-
-7. dobavi logging
-8. exception handling
 13. edit product bug if single price is changed how to check and know if we need to apply dds again
-15. пдф-а да има един отделен за продукт- да се добави името на клиента на страницатафилтриране по дати
-16. edinн отделен за всичките му изписвания - да се добави името на клиента филтриране по дати
+17. da se opravi relative pytq na phantom js

@@ -28,7 +28,7 @@
 
         public decimal Sum { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public Client Client { get; set; }
 

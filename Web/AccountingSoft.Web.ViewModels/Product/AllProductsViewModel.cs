@@ -29,5 +29,7 @@
         public string ClientName { get; set; }
 
         public decimal TotalSum { get; set; }
+
+        public decimal SoldSum { get; set; }
     }
 }
