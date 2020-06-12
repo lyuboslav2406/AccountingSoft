@@ -51,7 +51,7 @@
                     @Html.DisplayFor(modelItem => item.Sum)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Client.EIK)
+                    @Model.ClientName
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Редактирай</a> |

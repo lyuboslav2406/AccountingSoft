@@ -154,7 +154,7 @@
 
         public Product GetProductById(Guid id)
         {
-            var product = this.productRepository.All().Where(x => x.Id == id).Include(m => m.Client).FirstOrDefault();
+            var product = this.productRepository.All().Where(x => x.Id == id).FirstOrDefault();
             return product;
         }
     }

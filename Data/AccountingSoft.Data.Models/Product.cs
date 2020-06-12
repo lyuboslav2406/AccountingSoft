@@ -29,8 +29,5 @@
         public decimal Sum { get; set; }
 
         public System.Guid ClientId { get; set; }
-
-        [ForeignKey("ClientId")]
-        public Client Client { get; set; }
     }
 }

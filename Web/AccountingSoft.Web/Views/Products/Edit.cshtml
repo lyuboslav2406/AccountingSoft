@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Edit";
-    var clients = @Model.Clients.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 }
 
 <h1>Проомени клиент</h1>
@@ -29,8 +28,8 @@
                 <span asp-validation-for="SinglePrice" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ClientId" class="control-label">Клиент</label>ss
-                <select asp-for="ClientId" class="form-control" asp-items="clients"></select>
+                <label asp-for="ClientId" class="control-label">Клиент</label>
+                <input type="hidden" asp-for="ClientId" readonly="readonly" class="form-control" />
                 <span asp-validation-for="ClientId" class="text-danger"></span>
             </div>
             <div class="form-group">

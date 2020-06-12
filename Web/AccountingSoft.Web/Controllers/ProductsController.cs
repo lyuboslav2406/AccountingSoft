@@ -41,6 +41,9 @@
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
 
+            object clientName;
+            this.memoryCache.TryGetValue("ClientName", out clientName);
+
             var products = new AllProductsViewModel();
 
             if (idString != null)
@@ -52,7 +55,7 @@
             {
                 products.Products = this.productService.GetAllProducts<ProductViewModel>(search, ItemsPerPage, (page - 1) * ItemsPerPage);
             }
-
+            products.ClientName = clientName.ToString();
             var count = this.productService.GetCount();
 
             products.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
@@ -69,11 +72,8 @@
 
         public IActionResult Create()
         {
-            var clients = this.clientService.GetAllClients<ClientDropDownViewModel>();
-
             var viewModel = new ProductViewModel
             {
-                Clients = clients,
             };
             return this.View(viewModel);
         }
@@ -84,6 +84,11 @@
         {
             var product = AutoMapperConfig.MapperInstance.Map<Product>(input);
             product.Id = Guid.NewGuid();
+
+            string idString = string.Empty;
+            this.memoryCache.TryGetValue("ClientSelected", out idString);
+            product.ClientId = Guid.Parse(idString);
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
@@ -117,6 +122,7 @@
         {
             var product = AutoMapperConfig.MapperInstance.Map<Product>(pr);
 
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(pr);
@@ -130,9 +136,7 @@
         public IActionResult Edit(Guid id)
         {
             var pr = this.productService.GetProductById(id);
-            var clients = this.clientService.GetAllClients<ClientDropDownViewModel>();
             var product = AutoMapperConfig.MapperInstance.Map<ProductViewModel>(pr);
-            product.Clients = clients;
             return this.View(product);
 
         }
@@ -142,14 +146,16 @@
         {
             var pr = this.productService.GetProductById(id);
             var product = AutoMapperConfig.MapperInstance.Map<ProductViewModel>(pr);
-            var clients = this.clientService.GetAllClients<ClientDropDownViewModel>();
-            product.Clients = clients;
             return this.View(product);
         }
 
         [HttpPost]
         public async Task<IActionResult> SellingProduct(ProductViewModel pr)
         {
+            string idString = string.Empty;
+            this.memoryCache.TryGetValue("ClientSelected", out idString);
+
+            pr.ClientId = Guid.Parse(idString);
             var product = AutoMapperConfig.MapperInstance.Map<Product>(pr);
 
             if (pr.SellingQty > pr.Qty)

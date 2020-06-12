@@ -33,7 +33,5 @@
         public Client Client { get; set; }
 
         public System.Guid ClientId { get; set; }
-
-        public IEnumerable<ClientDropDownViewModel> Clients { get; set; }
     }
 }

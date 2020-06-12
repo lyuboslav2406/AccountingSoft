@@ -35,16 +35,10 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Sum)
         </dd>
-        <dt class = "col-sm-2">
-            Клиент
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Client.Name)
-        </dd class>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Client.EIK" />
+        <input type="hidden" asp-for="ClientId" />
         <input type="submit" value="Изтрий" class="btn btn-danger" /> |
         <a asp-action="Index">Назад</a>
     </form>
