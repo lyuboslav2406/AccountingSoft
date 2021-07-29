@@ -38,7 +38,7 @@
             await this.productRepository.SaveChangesAsync();
         }
 
-        public async Task AddSellingProduct(Product product, decimal sellingQty)
+        public async Task AddSellingProduct(Product product, decimal sellingQty, DateTime crOn)
         {
             var soldProduct = new SoldProduct()
             {
@@ -46,7 +46,7 @@
                 ProductId = product.Id,
                 SoldQty = sellingQty,
             };
-            soldProduct.CreatedOn = DateTime.Today;
+            soldProduct.CreatedOn = crOn;
             product.Qty = product.Qty - sellingQty;
             product.Sum = product.Sum - (product.SinglePrice * sellingQty);
             await this.soldProductRepository.AddAsync(soldProduct);
@@ -180,6 +180,65 @@
                                  .All().Where(a => a.ProductId == id).Include(a => a.Product)
                                  .OrderByDescending(x => x.CreatedOn);
             }
+            return products.To<T>();
+        }
+
+        public IEnumerable<T> GetAllZeroProducts<T>(Guid id, DateTime startDate, DateTime endDate, string search = null, int? take = null, int skip = 0, bool forPdf = false)
+        {
+            IQueryable<Product> products = null;
+
+            if (search != null)
+            {
+                products = this.productRepository
+                .All().Where(p => p.Qty == 0 && p.ProductName.Contains(search) && p.CreatedOn.Year <= ( DateTime.Today.Year - 1 ))
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip(skip);
+            }
+            else if (startDate != DateTime.MinValue && endDate != DateTime.MinValue)
+            {
+                products = this.productRepository
+                 .All().Where(p => p.Qty == 0 && p.CreatedOn > startDate && p.CreatedOn < endDate)
+                 .OrderByDescending(x => x.CreatedOn)
+                 .Skip(skip);
+            }
+            else
+            {
+                products = this.productRepository
+                 .All().Where(p => p.Qty == 0 && p.CreatedOn.Year >= (DateTime.Today.Year - 1))
+                 .OrderByDescending(x => x.CreatedOn)
+                 .Skip(skip);
+            }
+
+            if (take.HasValue)
+            {
+                products = products.Where(a => a.ClientId == id).Take(take.Value);
+            }
+
+            if (forPdf)
+            {
+                products = products.Where(a => a.ClientId == id);
+            }
+
+            return products.To<T>();
+        }
+
+        public IEnumerable<T> GetAllZeroProducts<T>(string search = null, int? take = null, int skip = 0)
+        {
+            IQueryable<Product> products = this.productRepository
+                  .All()
+                  .OrderByDescending(x => x.CreatedOn)
+                  .Skip(skip);
+
+            if (search != null)
+            {
+                products = products.Where(a => a.ProductName.Contains(search) && a.Qty == 0);
+            }
+
+            if (take.HasValue)
+            {
+                products = products.Where(a => a.Qty == 0).Take(take.Value);
+            }
+
             return products.To<T>();
         }
 

@@ -11,7 +11,7 @@
     {
         Task AddProduct(Product product);
 
-        Task AddSellingProduct(Product product, decimal sellingQty);
+        Task AddSellingProduct(Product product, decimal sellingQty, DateTime crOn);
 
         Task EditProduct(Product product);
 
@@ -22,6 +22,10 @@
         IEnumerable<T> GetAllProducts<T>(Guid id, DateTime startDate, DateTime endDate, string search = null, int? take = null, int skip = 0, bool forPdf = false);
 
         IEnumerable<T> GetAllProducts<T>(string search = null, int? take = null, int skip = 0);
+
+        IEnumerable<T> GetAllZeroProducts<T>(Guid id, DateTime startDate, DateTime endDate, string search = null, int? take = null, int skip = 0, bool forPdf = false);
+
+        IEnumerable<T> GetAllZeroProducts<T>(string search = null, int? take = null, int skip = 0);
 
         IEnumerable<T> GetAllSoldProducts<T>(Guid id, DateTime startDate, DateTime endDate);
 

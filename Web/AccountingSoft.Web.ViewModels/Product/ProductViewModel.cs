@@ -30,6 +30,8 @@
 
         public DateTime CreatedOn { get; set; }
 
+        public DateTime CreatedOnForSelling { get; set; }
+
         public Client Client { get; set; }
 
         public System.Guid ClientId { get; set; }

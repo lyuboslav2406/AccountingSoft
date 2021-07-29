@@ -76,6 +76,47 @@
             return this.View(products);
         }
 
+        public IActionResult IndexZeroProducts(DateTime startDate, DateTime endDate, int page = 1, string search = null)
+        {
+            string idString = string.Empty;
+            this.memoryCache.TryGetValue("ClientSelected", out idString);
+
+            object clientName;
+            this.memoryCache.TryGetValue("ClientName", out clientName);
+
+            var products = new AllProductsViewModel();
+
+            if (idString != null || (startDate != DateTime.MinValue && endDate != DateTime.MinValue))
+            {
+                Guid id = new Guid(idString);
+                products.Products = this.productService.GetAllZeroProducts<ProductViewModel>(id, startDate, endDate, search, ItemsPerPage, (page - 1) * ItemsPerPage, false);
+            }
+            else
+            {
+                products.Products = this.productService.GetAllZeroProducts<ProductViewModel>(search, ItemsPerPage, (page - 1) * ItemsPerPage);
+            }
+
+            if (clientName == null)
+            {
+                clientName = "Не е избран клиент";
+            }
+
+            products.ClientName = clientName.ToString();
+            var count = this.productService.GetCount();
+
+            products.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+
+            if (products.PagesCount == 0)
+            {
+                products.PagesCount = 1;
+            }
+
+            products.CurrentPage = page;
+
+            return this.View(products);
+        }
+
+
         public IActionResult Create()
         {
             var viewModel = new ProductViewModel
@@ -90,7 +131,7 @@
         {
             var product = AutoMapperConfig.MapperInstance.Map<Product>(input);
             product.Id = Guid.NewGuid();
-            product.CreatedOn = DateTime.Today;
+            product.CreatedOn = input.CreatedOn;
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
             product.ClientId = Guid.Parse(idString);
@@ -160,17 +201,23 @@
         {
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
-
-            pr.ClientId = Guid.Parse(idString);
-            var product = AutoMapperConfig.MapperInstance.Map<Product>(pr);
-
-            if (pr.SellingQty > pr.Qty)
+            if (idString != null)
             {
-                return this.View(pr);
+                pr.ClientId = Guid.Parse(idString);
+                var product = AutoMapperConfig.MapperInstance.Map<Product>(pr);
+
+                if (pr.SellingQty > pr.Qty)
+                {
+                    return this.View(pr);
+                }
+                else
+                {
+                    await this.productService.AddSellingProduct(product, pr.SellingQty, pr.CreatedOnForSelling);
+                    return this.RedirectToAction("Index", "Products");
+                }
             }
             else
             {
-                await this.productService.AddSellingProduct(product, pr.SellingQty);
                 return this.RedirectToAction("Index", "Products");
             }
         }
