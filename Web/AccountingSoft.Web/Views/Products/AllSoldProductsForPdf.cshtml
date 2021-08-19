@@ -24,6 +24,10 @@
             <th>
                 Дата на изписване
             </th>
+            <th>
+                |
+            </th>
+            
             <th></th>
         </tr>
     </thead>
@@ -50,12 +54,15 @@
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
 <div>
-    
+
     <hr />
-    Тотално Продадено Количество: @Model.TotalSoldQty    
+    Тотално Продадено Количество: @Model.TotalSoldQty
     <hr />
     Тотално Продадена Сума: @Model.SoldSum
+    <hr />
+    Номер на фактура : @Model.InvoiceNumber
 </div>

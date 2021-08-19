@@ -31,5 +31,7 @@
         public decimal TotalSum { get; set; }
 
         public decimal SoldSum { get; set; }
+
+        public int InvoiceNumber { get; set; }
     }
 }

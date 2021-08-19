@@ -20,5 +20,7 @@ namespace AccountingSoft.Web.ViewModels.Product
         public decimal TotalSoldQty { get; set; }
 
         public string ClientName { get; set; }
+
+        public int InvoiceNumber { get; set; }
     }
 }

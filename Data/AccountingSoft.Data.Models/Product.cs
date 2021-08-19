@@ -29,5 +29,10 @@
         public decimal Sum { get; set; }
 
         public System.Guid ClientId { get; set; }
+
+        public int InvoiceNumber { get; set; }
+
+        [Required]
+        public decimal SoldQty { get; set; }
     }
 }

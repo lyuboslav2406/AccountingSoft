@@ -35,41 +35,48 @@
             <th>
                 Дата
             </th>
+            <th>
+                Номер фактура
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Products)
         {
-        <tr>
+            <tr>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Qty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SinglePrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sum)
-            </td>
-            <td>
-                @Model.ClientName
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a> |
-                <a asp-action="SellingProduct" asp-route-id="@item.Id">Изписване на продукт</a> |
-                <a asp-action="AllSoldProducts" asp-route-id="@item.Id">Всички изписвания</a> |
-                <a asp-action="ConvertToPdfAllProducts">Към Пдф</a>
-            </td>
-        </tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SinglePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sum)
+                </td>
+                <td>
+                    @Model.ClientName
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InvoiceNumber)
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a> |
+                    <a asp-action="SellingProduct" asp-route-id="@item.Id">Изписване на продукт</a> |
+                    <a asp-action="AllSoldProducts" asp-route-id="@item.Id">Всички изписвания</a> |
+
+                </td>
+            </tr>
         }
     </tbody>
+    <a asp-action="ConvertToPdfAllProducts">Към Пдф</a>
 </table>
 
 <nav>

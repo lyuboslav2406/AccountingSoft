@@ -132,6 +132,7 @@
             var product = AutoMapperConfig.MapperInstance.Map<Product>(input);
             product.Id = Guid.NewGuid();
             product.CreatedOn = input.CreatedOn;
+            product.SoldQty = product.Qty;
             string idString = string.Empty;
             this.memoryCache.TryGetValue("ClientSelected", out idString);
             product.ClientId = Guid.Parse(idString);
@@ -240,10 +241,19 @@
 
         public IActionResult AllSoldProducts(Guid id, DateTime startDate, DateTime endDate)
         {
-            var allSold = new AllSoldProductsViewModel();
-            allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(id, startDate, endDate);
-            this.memoryCache.Set("SelectedProductId", id.ToString());
-            return this.View(allSold);
+            try
+            {
+                var allSold = new AllSoldProductsViewModel();
+                allSold.SoldProducts = this.productService.GetAllSoldProducts<SoldProductViewModel>(id, startDate, endDate);
+                this.memoryCache.Set("SelectedProductId", id.ToString());
+                allSold.InvoiceNumber = this.productService.GetProductById(id).InvoiceNumber;
+                return this.View(allSold);
+            }
+            catch (Exception e)
+            {
+                return this.View("~/Views/Products/Index");
+            }
+            
         }
 
         [HttpGet]
@@ -262,14 +272,14 @@
             allSold.TotalSoldQty = allSold.SoldProducts.Sum(s => s.SoldQty);
             allSold.SoldSum = allSold.TotalSoldQty * product.SinglePrice;
             allSold.ClientName = clientName.ToString();
-
+            allSold.InvoiceNumber = this.productService.GetProductById(Guid.Parse(id.ToString())).InvoiceNumber;
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/AllSoldProductsForPdf.cshtml", allSold);
 
             var fileContents = this.htmlToPdfConverter.Convert("wwwroot/js/", htmlData);
 
             return this.File(fileContents, "application/pdf;charset=utf-8");
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> ConvertToPdfAllProducts(DateTime startDate, DateTime endDate)
         {
@@ -289,8 +299,33 @@
                 var sum = p.Qty * p.SinglePrice;
                 products.TotalSum += sum;
             }
-
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/IndexForPdf.cshtml", products);
+
+            var fileContents = this.htmlToPdfConverter.Convert("wwwroot/js/", htmlData);
+
+            return this.File(fileContents, "application/pdf;charset=utf-8");
+        }
+        [HttpGet]
+        public async Task<IActionResult> ConvertToPdfAllZeroProducts(DateTime startDate, DateTime endDate)
+        {
+            string idString = string.Empty;
+            this.memoryCache.TryGetValue("ClientSelected", out idString);
+
+            object clientName;
+            this.memoryCache.TryGetValue("ClientName", out clientName);
+
+            var products = new AllProductsViewModel();
+
+            Guid id = new Guid(idString);
+            products.Products = this.productService.GetAllZeroProducts<ProductViewModel>(id, startDate, endDate, null, null, 0, true);
+            products.ClientName = clientName.ToString();
+            foreach (var p in products.Products)
+            {
+                var sum = p.Qty * p.SinglePrice;
+                products.TotalSum += sum;
+            }
+
+            var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Products/IndexForZeroPdf.cshtml", products);
 
             var fileContents = this.htmlToPdfConverter.Convert("wwwroot/js/", htmlData);
 

@@ -24,6 +24,9 @@
                 Количество
             </th>
             <th>
+                Продадено Количество
+            </th>
+            <th>
                 Единична цена
             </th>
             <th>
@@ -34,6 +37,9 @@
             </th>
             <th>
                 Дата
+            </th>
+            <th>
+                Номер фактура
             </th>
             <th></th>
         </tr>
@@ -50,10 +56,13 @@
                 @Html.DisplayFor(modelItem => item.Qty)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.SoldQty)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.SinglePrice)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sum)
+                @Html.DisplayFor(modelItem => item.SoldSum)
             </td>
             <td>
                 @Model.ClientName
@@ -62,14 +71,17 @@
                 @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.InvoiceNumber)
+            </td>
+            <td>
                 <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a> |
-                <a asp-action="SellingProduct" asp-route-id="@item.Id">Изписване на продукт</a> |
                 <a asp-action="AllSoldProducts" asp-route-id="@item.Id">Всички изписвания</a> |
-                <a asp-action="ConvertToPdfAllProducts">Към Пдф</a>
+
             </td>
         </tr>
         }
     </tbody>
+    <a asp-action="ConvertToPdfAllZeroProducts">Към Пдф</a>
 </table>
 
 <nav>

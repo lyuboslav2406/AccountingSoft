@@ -35,5 +35,17 @@
         public Client Client { get; set; }
 
         public System.Guid ClientId { get; set; }
+
+        public int InvoiceNumber { get; set; }
+
+        public decimal SoldQty { get; set; }
+
+        public decimal SoldSum 
+        {
+            get
+            {
+                return SoldQty * SinglePrice;
+            }
+        }
     }
 }
